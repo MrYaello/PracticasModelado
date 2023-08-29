@@ -1,12 +1,14 @@
 /**
  * Practica 1 del curso de Modelado y Programación.
- * Descripcion de la clase 
- * @author Yael Lozano Estrada
+ * Clase Mascota.
+ * @author Yael Lozano Estrada 319007095
  * @version Version 1.0
  */
 
 public class Mascota {
 
+  /** Contador de instancias creadas */
+  static int contador = 0;
   /** Nombre de la mascota. */
   public String nombre;
   /** Edad de la mascota */
@@ -39,6 +41,7 @@ public class Mascota {
     this.sexo = sexo;
     this.adoracion = adoracion;
     this.recuerdos = new String[0];
+    contador++;
   }
 
   /**
@@ -176,6 +179,10 @@ public class Mascota {
     this.adoracion = adoracion;
   }
 
+  /**
+   * Muestra la mascota en forma de cadena.
+   * @return cadena con información de la mascota.
+   */
   @Override
   public String toString() {
     return String.format("%s (%d) %s%s%s \n" +
@@ -183,27 +190,73 @@ public class Mascota {
             "Sus recuerdos son: %s \n", nombre, edad, tipo != null ? tipo + " ": "", raza != null ? raza  + " ": "", getSexo(), adoracion, getRecuerdos());
   }
 
+  /**
+   * Muestra los recuerdos de la mascota.
+   * @return cadena con los recuerdos de la mascota.
+   */
   public String getRecuerdos() {
     String temp = "[";
     for (String s: recuerdos) temp += s + ", ";
     return temp.substring(0, temp.lastIndexOf(", ") < 0 ? temp.length() : temp.lastIndexOf(", ")) + "]";
   }
 
+  /**
+   * Método para compartir los recuerdos entre mascotas.
+   * @param mascota mascota a la que se trasmitirá el recuerdo.
+   * @throws Exception Si se envía como argumento el mismo objeto.
+   */
   public void contar(Mascota mascota) throws Exception {
-    System.out.println(nombre + " le está contando a " + mascota.nombre);
     if (this.equals(mascota)) throw new Exception("No te puedes contar algo a ti mismo.");
-    try {
-      mascota.agregaRecuerdo(this.adoracion);
-    } catch (Exception e) {
-      System.out.println(mascota.nombre + " no puede recordar más.");
-    }
+    mascota.agregaRecuerdo(this.nombre + " adora " + this.adoracion);
   }
 
+  /**
+   * Agrega recuerdos a la lista de recuerdos de la mascota, con un máximo
+   * de tres.
+   * @param recuerdo
+   * @throws Exception
+   */
   private void agregaRecuerdo(String recuerdo) throws Exception {
-    if (recuerdos.length + 1 > 3) throw new Exception("Demasiados recuerdos");
+    if (recuerdos.length + 1 > 3) throw new Exception(this.nombre + " no puede recordar más.");
     String[] temp = new String[recuerdos.length + 1];
     for (int i = 0; i < recuerdos.length; i++) temp[i] = recuerdos[i];
     recuerdos = temp;
     recuerdos[temp.length - 1] = recuerdo;
+  }
+
+  /**
+   * Método principal para probar la clase Mascota.
+   * @param args argumentos de linea de comandos.
+   */
+  public static void main(String[] args) {
+    Mascota m1 = new Mascota("Bruno", 6, "Perro", "Salchicha", "Cafe", true, "Ser acariciado");
+    Mascota m2 = new Mascota("Michi", 2, false, "Jugar");
+    Mascota m3 = new Mascota("Poti", 2, "Perico", "Australiano", "Verde", false, "Ser alimentado");
+    Mascota m4 = new Mascota("Pepo", 9, "Perro", "Chihuahua", "Negro", true, "Perseguir ratones");
+    Mascota m5 = new Mascota("Suki", 6, false, "Ladrar");
+    Mascota m6 = new Mascota("Bruno", 4, "Gato", "Siames", "Beige", true, "Odiar su existencia");
+    try {
+      m1.contar(m2);
+      m1.contar(m3);
+      m1.contar(m4);
+      m1.contar(m5);
+      m1.contar(m6);
+      m2.contar(m1);
+      m3.contar(m1);
+      m4.contar(m1);
+      //Debe imprimir Bruno no puede recordar más.
+      m5.contar(m1);
+      //Debe imprimir No te puedes contar algo a ti mismo.
+      //m1.contar(m1);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+    System.out.println(m1);
+    System.out.println(m2);
+    System.out.println(m3);
+    System.out.println(m4);
+    System.out.println(m5);
+    System.out.println(m6);
+    System.out.println(Mascota.contador + " instancias creadas.");
   }
 }
