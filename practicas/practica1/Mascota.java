@@ -19,6 +19,8 @@ public class Mascota {
   private String raza;
   /** Color de la mascota */
   private String color;
+  /** Mejor amigo de la mascota */
+  private Mascota mejorAmigo;
   /** Sexo de la mascota.
    *  Verdadero - Macho 
    *  Falso - Hembra*/
@@ -165,7 +167,7 @@ public class Mascota {
   
   /**
    * Permite accesar a la adoración de la mascota.
-   * @return la adoración de la mascota
+   * @return la nueva adoración de la mascota
    */ 
   public String getAdoracion() {
     return this.adoracion;
@@ -177,6 +179,30 @@ public class Mascota {
    */
   public void setAdoracion() {
     this.adoracion = adoracion;
+  }
+
+  /**
+   * Permite accesar al mejor amigo de la mascota.
+   * @return el mejor amigo de la mascota.
+   */
+  public Mascota getMejorAmigo() {
+    return mejorAmigo;
+  }
+
+  /**
+   * Muestra el mejor amigo de la mascota en forma de cadena.
+   * @return cadena con el nombre de la mascota y el de su mejor amigo.
+   */
+  public String muestraMejorAmigo() {
+    return nombre + " es mejor amigo de " + (mejorAmigo == null ? "nadie :(" : mejorAmigo.nombre);
+  }
+
+  /**
+   * Modifica el mejor amigo de la mascota.
+   * @param mejorAmigo el nuevo mejor amigo de la mascota.
+   */
+  public void setMejorAmigo(Mascota mejorAmigo) {
+    this.mejorAmigo = mejorAmigo;
   }
 
   /**
