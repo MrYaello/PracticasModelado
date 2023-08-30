@@ -106,7 +106,7 @@ public class Mascota {
    * @param edad la nueva edad de la mascota.
    */
   public void setEdad(int edad) {
-    this.nombre = nombre;
+    this.edad = edad;
   }
 
   /**
@@ -162,23 +162,23 @@ public class Mascota {
    * @return el sexo de la mascota.
    */
   public String getSexo() {
-    return this.sexo == true ? "Macho" : "Hembra";
+    return this.sexo ? "Macho" : "Hembra";
   }
-  
+
+  /**
+   * Modifica la adoracion de la mascota.
+   * @param adoracion la nueva adoracion de la mascota.
+   */
+  public void setAdoracion(String adoracion) {
+    this.adoracion = adoracion;
+  }
+
   /**
    * Permite accesar a la adoración de la mascota.
-   * @return la nueva adoración de la mascota
+   * @return la adoración de la mascota
    */ 
   public String getAdoracion() {
     return this.adoracion;
-  }
-  
-  /** 
-   * Modifica la adoracion de la mascota.
-   * @return la adoracion de la mascota.
-   */
-  public void setAdoracion() {
-    this.adoracion = adoracion;
   }
 
   /**
@@ -239,8 +239,8 @@ public class Mascota {
   /**
    * Agrega recuerdos a la lista de recuerdos de la mascota, con un máximo
    * de tres.
-   * @param recuerdo
-   * @throws Exception
+   * @param recuerdo nuevo recuerdo que agregar a la lista.
+   * @throws Exception Si la mascota ya tiene más de 3 recuerdos.
    */
   private void agregaRecuerdo(String recuerdo) throws Exception {
     if (recuerdos.length + 1 > 3) throw new Exception(this.nombre + " no puede recordar más.");
