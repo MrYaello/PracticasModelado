@@ -20,7 +20,7 @@ public class Mascota {
   /** Color de la mascota */
   private String color;
   /** Mejor amigo de la mascota */
-  private Mascota mejorAmigo;
+  private Mascota[] mejoresAmigos;
   /** Sexo de la mascota.
    *  Verdadero - Macho 
    *  Falso - Hembra*/
@@ -43,6 +43,7 @@ public class Mascota {
     this.sexo = sexo;
     this.adoracion = adoracion;
     this.recuerdos = new String[0];
+    this.mejoresAmigos = new Mascota[0];
     contador++;
   }
 
@@ -182,30 +183,6 @@ public class Mascota {
   }
 
   /**
-   * Permite accesar al mejor amigo de la mascota.
-   * @return el mejor amigo de la mascota.
-   */
-  public Mascota getMejorAmigo() {
-    return mejorAmigo;
-  }
-
-  /**
-   * Muestra el mejor amigo de la mascota en forma de cadena.
-   * @return cadena con el nombre de la mascota y el de su mejor amigo.
-   */
-  public String muestraMejorAmigo() {
-    return nombre + " es mejor amigo de " + (mejorAmigo == null ? "nadie :(" : mejorAmigo.nombre);
-  }
-
-  /**
-   * Modifica el mejor amigo de la mascota.
-   * @param mejorAmigo el nuevo mejor amigo de la mascota.
-   */
-  public void setMejorAmigo(Mascota mejorAmigo) {
-    this.mejorAmigo = mejorAmigo;
-  }
-
-  /**
    * Muestra la mascota en forma de cadena.
    * @return cadena con información de la mascota.
    */
@@ -227,16 +204,6 @@ public class Mascota {
   }
 
   /**
-   * Método para compartir los recuerdos entre mascotas.
-   * @param mascota mascota a la que se trasmitirá el recuerdo.
-   * @throws Exception Si se envía como argumento el mismo objeto.
-   */
-  public void contar(Mascota mascota) throws Exception {
-    if (this.equals(mascota)) throw new Exception("No te puedes contar algo a ti mismo.");
-    mascota.agregaRecuerdo(this.nombre + " adora " + this.adoracion);
-  }
-
-  /**
    * Agrega recuerdos a la lista de recuerdos de la mascota, con un máximo
    * de tres.
    * @param recuerdo nuevo recuerdo que agregar a la lista.
@@ -251,6 +218,52 @@ public class Mascota {
   }
 
   /**
+   * Muestra los mejores amigos de la mascota.
+   * @return cadena con los mejores amigos de la mascota.
+   */
+  public String getMejoresAmigos() {
+    if (mejoresAmigos.length == 0) return "El mismo :(";
+    if (mejoresAmigos.length == 1) return mejoresAmigos[0].nombre;
+    String temp = "";
+    for (int i = 0; i < mejoresAmigos.length; i++) {
+      temp += mejoresAmigos[i].nombre;
+      if (i == mejoresAmigos.length - 2) temp += " y ";
+      else temp += ", ";
+    }
+    return temp.substring(0, temp.lastIndexOf(", "));
+  }
+
+  /**
+   * Agrega mejores amigos a la lista de mejores amigos de la mascota.
+   * @param amigo nuevo amigo que agregar a la lista.
+   */
+  public void agregaMejoresAmigos(Mascota amigo) {
+    Mascota[] temp = new Mascota[mejoresAmigos.length + 1];
+    for (int i = 0; i < mejoresAmigos.length; i++) temp[i] = mejoresAmigos[i];
+    mejoresAmigos = temp;
+    mejoresAmigos[temp.length - 1] = amigo;
+  }
+
+  /**
+   * Elimina el último mejor amigo agregado a la lista.
+   */
+  public void eliminaUltimoMejorAmigo() {
+    Mascota[] temp = new Mascota[Math.max(mejoresAmigos.length - 1, 0)];
+    for (int i = 0; i < temp.length; i++) temp[i] = mejoresAmigos[i];
+    mejoresAmigos = temp;
+  }
+
+  /**
+   * Método para compartir los recuerdos entre mascotas.
+   * @param mascota mascota a la que se trasmitirá el recuerdo.
+   * @throws Exception Si se envía como argumento el mismo objeto.
+   */
+  public void contar(Mascota mascota) throws Exception {
+    if (this.equals(mascota)) throw new Exception("No te puedes contar algo a ti mismo.");
+    mascota.agregaRecuerdo(this.nombre + " adora " + this.adoracion);
+  }
+
+  /**
    * Método principal para probar la clase Mascota.
    * @param args argumentos de linea de comandos.
    */
@@ -260,7 +273,7 @@ public class Mascota {
     Mascota m3 = new Mascota("Poti", 2, "Perico", "Australiano", "Verde", false, "Ser alimentado");
     Mascota m4 = new Mascota("Pepo", 9, "Perro", "Chihuahua", "Negro", true, "Perseguir ratones");
     Mascota m5 = new Mascota("Suki", 6, false, "Ladrar");
-    Mascota m6 = new Mascota("Bruno", 4, "Gato", "Siames", "Beige", true, "Odiar su existencia");
+    Mascota m6 = new Mascota("Wuwai", 4, "Gato", "Naranjoso", "Naranja", true, "Odiar su existencia");
     try {
       m1.contar(m2);
       m1.contar(m3);
