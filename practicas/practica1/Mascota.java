@@ -222,7 +222,7 @@ public class Mascota {
    * @return cadena con los mejores amigos de la mascota.
    */
   public String getMejoresAmigos() {
-    if (mejoresAmigos.length == 0) return "El mismo :(";
+    if (mejoresAmigos.length == 0) return "si mismo :(";
     if (mejoresAmigos.length == 1) return mejoresAmigos[0].nombre;
     String temp = "";
     for (int i = 0; i < mejoresAmigos.length; i++) {
@@ -270,7 +270,7 @@ public class Mascota {
   public static void main(String[] args) {
     Mascota m1 = new Mascota("Bruno", 6, "Perro", "Salchicha", "Cafe", true, "Ser acariciado");
     Mascota m2 = new Mascota("Michi", 2, false, "Jugar");
-    Mascota m3 = new Mascota("Poti", 2, "Perico", "Australiano", "Verde", false, "Ser alimentado");
+    Mascota m3 = new Mascota("Lucky", 2, "Perico", "Australiano", "Verde", false, "Ser alimentado");
     Mascota m4 = new Mascota("Pepo", 9, "Perro", "Chihuahua", "Negro", true, "Perseguir ratones");
     Mascota m5 = new Mascota("Suki", 6, false, "Ladrar");
     Mascota m6 = new Mascota("Wuwai", 4, "Gato", "Naranjoso", "Naranja", true, "Odiar su existencia");

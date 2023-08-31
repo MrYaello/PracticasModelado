@@ -30,8 +30,8 @@ public class Veterinario {
   public void hagaseLaAmistad(Mascota m1, Mascota m2) {
     if (m1.equals(ultimaAmistadA) || m2.equals(ultimaAmistadA) ||
             m1.equals(ultimaAmistadB) || m2.equals(ultimaAmistadB)) {
-      m1.eliminaUltimoMejorAmigo();
-      m2.eliminaUltimoMejorAmigo();
+      ultimaAmistadB.eliminaUltimoMejorAmigo();
+      ultimaAmistadA.eliminaUltimoMejorAmigo();
     }
     ultimaAmistadA = m1;
     ultimaAmistadB = m2;
@@ -47,7 +47,7 @@ public class Veterinario {
   public static void main(String[] args) {
     Mascota m1 = new Mascota("Bruno", 6, true, "Ladrar");
     Mascota m2 = new Mascota("Michi", 6, false, "Ladrar");
-    Mascota m3 = new Mascota("Poti", 6, false, "Ladrar");
+    Mascota m3 = new Mascota("Lucky", 6, false, "Ladrar");
     Mascota m4 = new Mascota("Pepo", 6, true, "Ladrar");
     Mascota m5 = new Mascota("Suki", 6, false, "Ladrar");
     Mascota m6 = new Mascota("Wuwai", 6, true, "Ladrar");
@@ -58,16 +58,29 @@ public class Veterinario {
     System.out.println("Los mejores amigos de " + m1.getNombre() + " son " + m1.getMejoresAmigos());
     System.out.println("Los mejores amigos de " + m5.getNombre() + " son " + m5.getMejoresAmigos());
     vet.hagaseLaAmistad(m1, m2);
-    vet.hagaseLaAmistad(m5, m4);
-    System.out.println("Los mejores amigos de " + m3.getNombre() + " son " + m3.getMejoresAmigos());
-    System.out.println("Los mejores amigos de " + m4.getNombre() + " son " + m4.getMejoresAmigos());
-    vet.hagaseLaAmistad(m1, m2);
-
     System.out.println("Los mejores amigos de " + m1.getNombre() + " son " + m1.getMejoresAmigos());
     System.out.println("Los mejores amigos de " + m2.getNombre() + " son " + m2.getMejoresAmigos());
+    // Suki se queda sin amigos, pues se revierte la última relación de amistad.
     System.out.println("Los mejores amigos de " + m5.getNombre() + " son " + m5.getMejoresAmigos());
-    vet.hagaseLaAmistad(m5, m6);
+    vet.hagaseLaAmistad(m5, m4);
     System.out.println("Los mejores amigos de " + m5.getNombre() + " son " + m5.getMejoresAmigos());
+    System.out.println("Los mejores amigos de " + m4.getNombre() + " son " + m4.getMejoresAmigos());
+    vet.hagaseLaAmistad(m3, m1);
+    System.out.println("Los mejores amigos de " + m3.getNombre() + " son " + m3.getMejoresAmigos());
+    System.out.println("Los mejores amigos de " + m1.getNombre() + " son " + m1.getMejoresAmigos());
+    //Aquí también se revierte la última relación de amistad.
+    vet.hagaseLaAmistad(m1, m5);
+    System.out.println("Los mejores amigos de " + m1.getNombre() + " son " + m1.getMejoresAmigos());
+    System.out.println("Los mejores amigos de " + m5.getNombre() + " son " + m5.getMejoresAmigos());
+    vet.hagaseLaAmistad(m6, m3);
     System.out.println("Los mejores amigos de " + m6.getNombre() + " son " + m6.getMejoresAmigos());
+    System.out.println("Los mejores amigos de " + m3.getNombre() + " son " + m3.getMejoresAmigos());
+    //Aquí también se revierte la última relación de amistad.
+    vet.hagaseLaAmistad(m6, m5);
+    System.out.println("Los mejores amigos de " + m6.getNombre() + " son " + m6.getMejoresAmigos());
+    System.out.println("Los mejores amigos de " + m5.getNombre() + " son " + m5.getMejoresAmigos());
+    vet.hagaseLaAmistad(m3, m2);
+    System.out.println("Los mejores amigos de " + m3.getNombre() + " son " + m3.getMejoresAmigos());
+    System.out.println("Los mejores amigos de " + m2.getNombre() + " son " + m2.getMejoresAmigos());
   }
 }
