@@ -8,7 +8,7 @@ import java.awt.Color;
  *
  * @author Sango
  */
-public class Practica2 {
+public class EscalaColoresImagen{
 
     /**
      * @param args the command line arguments
@@ -16,12 +16,12 @@ public class Practica2 {
     public static void main(String[] args) {
         System.out.println("Hola Mundo");
 
-        BufferedImage i = null;
+        BufferedImage imagen = null;
 
         try{
-            i = ImageIO.read(new File("imagenes\\foto.jpg"));
+            imagen = ImageIO.read(new File("imagenes\\foto.jpg"));
         } catch (Exception e){
-
+            System.out.println("No se puede leer la imagen.")
         }
 
 
