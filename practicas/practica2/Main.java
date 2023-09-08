@@ -13,12 +13,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Hola mundo");
+        System.out.println("Aplicando filtros a la imagen ./imagenes/foto.jpg");
         FiltrosImagen filtrosImagen = new FiltrosImagen();
 
         BufferedImage imagen = null;
-
-        try{
+        try {
             imagen = ImageIO.read(new File("./imagenes/foto.jpg"));
         } catch (Exception e){
             System.out.println("No se puede leer la imagen.");
