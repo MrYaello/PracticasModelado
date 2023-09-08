@@ -1,6 +1,7 @@
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
@@ -19,7 +20,7 @@ public class Main {
         BufferedImage imagen = null;
         try {
             imagen = ImageIO.read(new File("./imagenes/foto.jpg"));
-        } catch (Exception e){
+        } catch (IOException ioe) {
             System.out.println("No se puede leer la imagen.");
         }
 
