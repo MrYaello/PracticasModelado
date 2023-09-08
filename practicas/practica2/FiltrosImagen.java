@@ -26,6 +26,7 @@ public class FiltrosImagen {
         for (int i = 0; i < original.getHeight(); i++) {
             for (int j = 0; j < original.getWidth(); j++) {
                 color = new Color(original.getRGB(j, i));
+
                 variacion = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
                 nuevaImagen.setRGB(j, i, new Color(variacion, variacion, variacion).getRGB());
             }
