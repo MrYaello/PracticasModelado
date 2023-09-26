@@ -1,7 +1,7 @@
 public class Deportivo extends Auto {
     public Deportivo() {
         llantas = "Deportivas.";
-        motor = "DEporivo.";
+        motor = "Deporivo.";
         carroceria = "Camion";
         armas = "Metralleta";
     }

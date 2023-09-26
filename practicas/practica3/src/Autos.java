@@ -1,6 +1,6 @@
 import java.util.*;
 public class Autos {
-    private int dinero = 10000;
+    int dinero = 10000;
 
     public void AutosDefault() {
         System.out.println("Autos para elegir:");
