@@ -34,9 +34,7 @@ public class Autos {
             dinero -= deportivo.calcularCosto();
         } else if (op == 3) {
             dinero -= laBestia.calcularCosto();
-        } else {
-            System.out.println("Puedes personalizar uno en la sección de menú.");
-        }
+        } 
 
         System.out.println("Tienes: " + dinero + " pesos.");
 
