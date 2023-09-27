@@ -37,6 +37,9 @@ public class Autos {
         } else if (op == 4) {
             Auto personalizado = autoFactory.crearAuto("custom");
             comprado = personalizado;
+        } else {
+            System.err.println("\u001B[31m" + "Seleccionó una opción inválida.");
+            return;
         }
 
         if (dinero < comprado.obtenerCosto()) {

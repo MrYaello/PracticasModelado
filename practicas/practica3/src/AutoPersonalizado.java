@@ -41,7 +41,7 @@ public class AutoPersonalizado extends Auto {
 
     private void calcularAtributos() {
         // Define los valores para los componentes elegidos
-        switch (llantas) {
+        switch (llantas.toLowerCase()) {
             case "simple":
                 ataque += 100;
                 defensa += 50;
@@ -66,9 +66,12 @@ public class AutoPersonalizado extends Auto {
                 velocidad += 10;
                 costo += 2500;
                 break;
+            default:
+                System.err.println("\u001B[31m" + llantas + " no es un tipo válido.");
+                return;
         }
 
-        switch (motor) {
+        switch (motor.toLowerCase()) {
             case "deportivo":
                 ataque += 150;
                 defensa += 60;
@@ -87,9 +90,12 @@ public class AutoPersonalizado extends Auto {
                 velocidad += 250;
                 costo += 2500;
                 break;
+            default:
+                System.err.println("\u001B[31m" + motor + " no es un tipo válido.");
+                return;
         }
 
-        switch (carroceria) {
+        switch (carroceria.toLowerCase()) {
             case "casual":
                 ataque += 80;
                 defensa += 60;
@@ -108,9 +114,12 @@ public class AutoPersonalizado extends Auto {
                 velocidad += 40;
                 costo += 2000;
                 break;
+            default:
+                System.err.println("\u001B[31m" + carroceria + " no es un tipo válido.");
+                return;
         }
 
-        switch (blindaje) {
+        switch (blindaje.toLowerCase()) {
             case "simple":
                 ataque += 80;
                 defensa += 80;
@@ -129,10 +138,12 @@ public class AutoPersonalizado extends Auto {
                 velocidad += 60;
                 costo += 2000;
                 break;
-
+            default:
+                System.err.println("\u001B[31m" + blindaje + " no es un tipo válido.");
+                return;
         }
 
-        switch (armas) {
+        switch (armas.toLowerCase()) {
             case "arpones":
                 ataque += 100;
                 defensa += 50;
@@ -163,6 +174,9 @@ public class AutoPersonalizado extends Auto {
                 velocidad += 110;
                 costo += 2500;
                 break;
+            default:
+                System.err.println("\u001B[31m" + armas + " no es un tipo válido.");
+                return;
         }
     }
 }
