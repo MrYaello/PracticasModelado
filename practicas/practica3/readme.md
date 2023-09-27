@@ -2,6 +2,9 @@
 ### Geronimo Soto Leslie   320032848
 ### Lozano Estrada Yael    319007095
 
+## ELECCION: PATRON FACTORY
+Elegimos este patron de diseño ya que el uso del patrón Factory promueve la programación basada en interfaces y abstracciones en lugar de implementaciones concretas, lo que conduce a un código más mantenible, y como se puede ver en el codigo, es lo que utilizamos para que sea mas flexible.
+
 ## ACTIVIDAD 1
 Menciona los principios de diseño esenciales de los patrones Factory, Abstract Factory y Builder. Menciona una desventaja de cada patron. 
 
