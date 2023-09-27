@@ -1,9 +1,9 @@
 public class Deportivo extends Auto {
     public Deportivo() {
         llantas = "Deportivas.";
-        motor = "Deporivo.";
-        carroceria = "Camion";
-        armas = "Metralleta";
+        motor = "Deportivo.";
+        carroceria = "Camion.";
+        armas = "Metralleta.";
     }
 
     @Override

@@ -13,23 +13,22 @@ public class Practica3 {
         while (continuar) {
             System.out.println(blue + "BIENVENIDO USUARIO. :D \n Por favor, elige alguna de nuestras opciones: \n 1. Elegir auto existente. \n 2. Personalizar mi auto." + formatoClasico);
             int elegir = sc.nextInt();
+            sc.nextLine(); //Limpiar el buffer.
 
             if (elegir == 1) {
-                Autos autos = new Autos();
+                Autos autos = new Autos(sc);
                 autos.AutosDefault();
             } else if (elegir == 2) {
-                MiAutoPersonalizado miAuto = new MiAutoPersonalizado();
+                MiAutoPersonalizado miAuto = new MiAutoPersonalizado(sc);
                 miAuto.personalizarAuto();
             } else {
                 System.err.println("Elige una opción correcta.");
             }
 
-            sc.nextInt();
+            System.out.println(formatoClasico + "¿Deseas personalizar otro auto? (y/n): " + red);
+            String respuesta = sc.next();
 
-            System.out.println(formatoClasico + "¿Deseas personalizar otro auto? (1.si \n 2. no): " + red);
-            int respuesta = sc.nextInt();
-
-            if (respuesta != 1) {
+            if (!respuesta.equalsIgnoreCase("y")) {
                 System.out.println("¡Hasta luego!");
                 continuar = false;
             }

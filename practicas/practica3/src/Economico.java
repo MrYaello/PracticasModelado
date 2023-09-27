@@ -1,9 +1,9 @@
 public class Economico extends Auto {
     public Economico() {
-        llantas = "Simple";
-        motor = "Diesel";
-        carroceria = "Casual";
-        armas = "Arpones";
+        llantas = "Simple.";
+        motor = "Diesel.";
+        carroceria = "Casual.";
+        armas = "Arpones.";
     }
 
     @Override

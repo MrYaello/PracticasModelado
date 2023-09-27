@@ -1,6 +1,12 @@
 import java.util.*;
 public class Autos {
-    int dinero = 10000;
+    int dinero;
+    Scanner sc;
+
+    public Autos(Scanner sc) {
+        dinero = 10000;
+        this.sc = sc;
+    }
 
     public void AutosDefault() {
         System.out.println("Autos para elegir:");
@@ -23,9 +29,6 @@ public class Autos {
         laBestia.mostrarCaracteristicas();
 
         System.out.print("QUIERO EL CARRO DE LA OPCION: ");
-
-
-        Scanner sc = new Scanner(System.in);
         int op = sc.nextInt();
 
         if (op == 1) {
@@ -37,8 +40,6 @@ public class Autos {
         } 
 
         System.out.println("Tienes: " + dinero + " pesos.");
-
-        sc.close();
     }
 }
 

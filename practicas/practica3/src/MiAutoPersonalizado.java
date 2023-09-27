@@ -12,8 +12,9 @@ public class MiAutoPersonalizado {
     private int velocidad;
     private int costo;
     private int miDinero = 10000;
+    Scanner sc;
 
-    public MiAutoPersonalizado() {
+    public MiAutoPersonalizado(Scanner sc) {
         llantas = "";
         motor = "";
         carroceria = "";
@@ -23,11 +24,10 @@ public class MiAutoPersonalizado {
         defensa = 0;
         velocidad = 0;
         costo = 0;
+        this.sc = sc;
     }
 
     public void personalizarAuto() {
-        Scanner sc = new Scanner(System.in);
-
         System.out.println("Personaliza tu auto estilo Mad Max:");
         System.out.println("Selecciona el tipo de llantas (simple, deportivas, off-road, oruga de tanque): ");
         llantas = sc.nextLine();
@@ -45,7 +45,6 @@ public class MiAutoPersonalizado {
         armas = sc.nextLine();
 
         calcularAtributos();
-        sc.close();
     }
 
     private void calcularAtributos() {
@@ -76,6 +75,7 @@ public class MiAutoPersonalizado {
                 costo += 2500;
                 break;
         }
+
         switch (motor) {
             case "deportivo":
                 ataque += 150;
@@ -96,6 +96,7 @@ public class MiAutoPersonalizado {
                 costo += 2500;
                 break;
         }
+
         switch (carroceria) {
             case "casual":
                 ataque += 80;
@@ -171,7 +172,6 @@ public class MiAutoPersonalizado {
                 costo += 2500;
                 break;
         }
-    
 
         // Muestra las estadísticas del auto personalizado
         String purple = "\u001B[35m"; 
@@ -181,10 +181,9 @@ public class MiAutoPersonalizado {
         System.out.println("Ataque: " + ataque);
         System.out.println("Defensa: " + defensa);
         System.out.println("Velocidad: " + velocidad);
-        int meSobra = miDinero -costo;
-        System.out.println("Costo: " + costo + " pesos. Ahora tienes: "  + meSobra);
-        System.out.println("Que lo disfrutes! Y recuerda siempre conducir con cuidado! ");
-
+        int meSobra = miDinero - costo;
+        System.out.println("Costo: " + costo + " pesos. Ahora tienes: "  + meSobra + " pesos.");
+        System.out.println("¡Que lo disfrutes! ¡Y recuerda siempre conducir con cuidado!");
     }
 }
 

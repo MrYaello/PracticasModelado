@@ -1,9 +1,9 @@
 public class LaBestia extends Auto {
     public LaBestia() {
-        llantas = "Oruga de Tanque..";
+        llantas = "Oruga de Tanque.";
         motor = "Off road.";
-        carroceria = "Camion";
-        armas = "Lanzallamas";
+        carroceria = "Camion.";
+        armas = "Lanzallamas.";
     }
 
     @Override
@@ -13,7 +13,7 @@ public class LaBestia extends Auto {
 
     @Override
     public void mostrarCaracteristicas() {
-        System.out.println("La bestia..");
+        System.out.println("La bestia.");
         System.out.println("Llantas: " + llantas);
         System.out.println("Motor: " + motor);
         System.out.println("Carroceria: " + carroceria);
