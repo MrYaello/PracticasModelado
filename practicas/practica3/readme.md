@@ -1,12 +1,11 @@
-PRACTICA 03.
-GERONIMO SOTO LESLIE   320032848
-LOZANO ESTRADA YAEL    319007095
+# Practica 03 del curso de Modelado y Programación. *Patrones de diseño*.
+### Geronimo Soto Leslie   320032848
+### Lozano Estrada Yael    319007095
 
-* ACTIVIDAD 1 *
-Menciona los principios de disenio esenciales de los patrones Factory, Abstract Factory y Builder. Menciona
-una desventaja de cada patron. 
+## ACTIVIDAD 1
+Menciona los principios de diseño esenciales de los patrones Factory, Abstract Factory y Builder. Menciona una desventaja de cada patron. 
 
----- PATRONES DE DISEÑO FACATORY ----
+### PATRONES DE DISEÑO FACTORY 
 Los patrones Factory son un conjunto de patrones de diseño en programación orientada a objetos que se utilizan para crear objetos sin especificar la clase exacta del objeto que se creará. Los principios de diseño esenciales asociados con los patrones Factory incluyen:
 
 1. **Abstracción de la creación**: Los patrones Factory se centran en ocultar los detalles de la creación de objetos y proporcionar una interfaz común para crear objetos de diferentes tipos o clases. Esto promueve la abstracción y la encapsulación.
@@ -25,7 +24,7 @@ Los patrones Factory se dividen generalmente en tres categorías principales: Fa
 
 DESVENTAJA: Una desventaja potencial de los patrones Factory es que pueden aumentar la complejidad de un código si se utilizan en exceso o de manera inapropiada. 
 
----- PATRONES DE DISEÑO ABSTRACT FACATORY ----
+### PATRONES DE DISEÑO ABSTRACT FACTORY
 Los patrones Abstract Factory son un conjunto de patrones de diseño que proporcionan una interfaz para crear familias de objetos relacionados o dependientes sin especificar sus clases concretas. Los principios de diseño esenciales asociados con los patrones Abstract Factory incluyen:
 
 1. **Abstracción de la creación de objetos**: Los patrones Abstract Factory se centran en abstraer la creación de objetos y proporcionar una interfaz común para crear familias de objetos relacionados. Esto ayuda a ocultar los detalles de implementación y promueve la flexibilidad en el diseño.
@@ -44,10 +43,10 @@ Los patrones Abstract Factory son un conjunto de patrones de diseño que proporc
 
 En resumen, los patrones Abstract Factory se centran en proporcionar una interfaz abstracta para crear familias de objetos relacionados, lo que promueve la abstracción, la separación de responsabilidades, el polimorfismo y la flexibilidad en el diseño del software. Estos principios de diseño esenciales son fundamentales para comprender y aplicar este patrón efectivamente.
 
-DESVENTAJA: En resumen, la desventaja principal de Abstract Factory radica en su potencial para aumentar la complejidad del código, especialmente cuando se aplica innecesariamente en sistemas simples o cuando la flexibilidad proporcionada por el patrón no se aprovecha por completo. Como con cualquier patrón de diseño, es importante evaluar cuidadosamente si Abstract Factory es la 
+DESVENTAJA: La desventaja principal de Abstract Factory radica en su potencial para aumentar la complejidad del código, especialmente cuando se aplica innecesariamente en sistemas simples o cuando la flexibilidad proporcionada por el patrón no se aprovecha por completo. Como con cualquier patrón de diseño, es importante evaluar cuidadosamente si Abstract Factory es la 
             elección adecuada para el problema específico que se está abordando y si realmente aporta beneficios significativos en términos de abstracción y flexibilidad.
 
----- PATRONES BUILDER ----
+### PATRONES BUILDER
 Los patrones de diseño Builder se utilizan para construir objetos complejos paso a paso. Los principios de diseño esenciales asociados con los patrones Builder incluyen:
 
 1. **Separación de la construcción y la representación**: El patrón Builder separa el proceso de construcción de un objeto complejo de su representación. Esto permite crear diferentes representaciones de un objeto sin cambiar su proceso de construcción.
@@ -71,3 +70,9 @@ Los patrones de diseño Builder se utilizan para construir objetos complejos pas
 En resumen, los patrones de diseño Builder se centran en la creación de objetos complejos de manera flexible y paso a paso, abstrayendo la construcción y permitiendo que los clientes personalicen la configuración de los objetos. Estos principios de diseño esenciales ayudan a garantizar una construcción eficiente y flexible de objetos complejos en un sistema de software.
 
 DESVENTAJA: Una desventaja potencial del patrón de diseño Builder es que puede aumentar la complejidad del código en comparación con soluciones más simples, especialmente cuando se aplica a objetos que no tienen una estructura compleja o que tienen un número limitado de configuraciones. 
+
+### DIAGRAMA DE CLASES
+![Diagrama de clases](diagrama.jpg)
+
+> [!NOTE]
+> El método main se encuentra en la clase Practica3, para correr la práctica ejecutar dicha clase. 
