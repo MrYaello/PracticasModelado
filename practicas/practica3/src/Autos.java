@@ -1,6 +1,6 @@
 import java.util.*;
 public class Autos {
-    private int dinero = 10000;
+    int dinero = 10000;
 
     public void AutosDefault() {
         System.out.println("Autos para elegir:");
@@ -34,9 +34,7 @@ public class Autos {
             dinero -= deportivo.calcularCosto();
         } else if (op == 3) {
             dinero -= laBestia.calcularCosto();
-        } else {
-            System.out.println("Puedes personalizar uno en la sección de menú.");
-        }
+        } 
 
         System.out.println("Tienes: " + dinero + " pesos.");
 
