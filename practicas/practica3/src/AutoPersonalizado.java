@@ -1,20 +1,8 @@
 import java.util.Scanner;
 
-public class MiAutoPersonalizado {
-    private String llantas;
-    private String motor;
-    private String carroceria;
-    private String blindaje;
-    private String armas;
+public class AutoPersonalizado extends Auto {
 
-    private int ataque;
-    private int defensa;
-    private int velocidad;
-    private int costo;
-    private int miDinero = 10000;
-    Scanner sc;
-
-    public MiAutoPersonalizado(Scanner sc) {
+    public AutoPersonalizado() {
         llantas = "";
         motor = "";
         carroceria = "";
@@ -24,11 +12,15 @@ public class MiAutoPersonalizado {
         defensa = 0;
         velocidad = 0;
         costo = 0;
-        this.sc = sc;
+        personalizarAuto();
     }
 
     public void personalizarAuto() {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Personaliza tu auto estilo Mad Max:");
+        System.out.println("Selecciona el nombre de tu nuevo auto: ");
+        nombre = sc.nextLine();
+
         System.out.println("Selecciona el tipo de llantas (simple, deportivas, off-road, oruga de tanque): ");
         llantas = sc.nextLine();
 
@@ -172,18 +164,6 @@ public class MiAutoPersonalizado {
                 costo += 2500;
                 break;
         }
-
-        // Muestra las estadísticas del auto personalizado
-        String purple = "\u001B[35m"; 
-        String formatoClasico = "\u001B[0m";
-        System.out.println(purple+"FELICIDADES :D."+formatoClasico);
-        System.out.println("Tu nuevo auto personalizado tiene las siguientes estadísticas:");
-        System.out.println("Ataque: " + ataque);
-        System.out.println("Defensa: " + defensa);
-        System.out.println("Velocidad: " + velocidad);
-        int meSobra = miDinero - costo;
-        System.out.println("Costo: " + costo + " pesos. Ahora tienes: "  + meSobra + " pesos.");
-        System.out.println("¡Que lo disfrutes! ¡Y recuerda siempre conducir con cuidado!");
     }
 }
 

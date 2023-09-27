@@ -6,26 +6,18 @@ public class Practica3 {
         Scanner sc = new Scanner(System.in);
         String blue = "\u001B[36m";
         String red = "\u001B[31m";
-        String formatoClasico = "\u001B[0m";
+        String clasico = "\u001B[0m";
+
+        AutoFactory autoFactory = new AutoFactory();
+        Autos autos = new Autos(autoFactory);
 
         boolean continuar = true;
-
+        System.out.println(blue + "BIENVENIDO. :D");
         while (continuar) {
-            System.out.println(blue + "BIENVENIDO USUARIO. :D \n Por favor, elige alguna de nuestras opciones: \n 1. Elegir auto existente. \n 2. Personalizar mi auto." + formatoClasico);
-            int elegir = sc.nextInt();
-            sc.nextLine(); //Limpiar el buffer.
+            System.out.println(blue + "Tienes " + autos.dinero + " pesos." + clasico);
+            autos.runAutos();
 
-            if (elegir == 1) {
-                Autos autos = new Autos(sc);
-                autos.AutosDefault();
-            } else if (elegir == 2) {
-                MiAutoPersonalizado miAuto = new MiAutoPersonalizado(sc);
-                miAuto.personalizarAuto();
-            } else {
-                System.err.println("Elige una opción correcta.");
-            }
-
-            System.out.println(formatoClasico + "¿Deseas personalizar otro auto? (y/n): " + red);
+            System.out.println(clasico + "¿Deseas adquirir otro auto? (y/n): " + red);
             String respuesta = sc.next();
 
             if (!respuesta.equalsIgnoreCase("y")) {
