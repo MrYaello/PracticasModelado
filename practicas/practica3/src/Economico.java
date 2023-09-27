@@ -6,9 +6,9 @@ public class Economico extends Auto {
         carroceria = "Casual";
         armas = "Arpones";
         blindaje = "Simple";
-        ataque = 0;
-        defensa = 0;
-        velocidad = 0;
+        ataque = 100 + 180 + 80 + 80 + 100;
+        defensa = 50 + 50 + 60 + 80 + 50;
+        velocidad = 20 + 100 + 30 + 40 + 40;
         costo = 1000 + 1000 + 1000 + 1500;
     }
 

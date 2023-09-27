@@ -6,9 +6,9 @@ public class LaBestia extends Auto {
         carroceria = "Camion";
         armas = "Lanzallamas";
         blindaje = "Tanque";
-        ataque = 0;
-        defensa = 0;
-        velocidad = 0;
+        ataque = 120 + 290 + 120 + 150 + 120;
+        defensa = 100 + 80 + 50 + 120 + 80;
+        velocidad = 10 + 250 + 50 + 60 + 60;
         costo = 2500 + 2000 + 2000 + 3000;
     }
 }
