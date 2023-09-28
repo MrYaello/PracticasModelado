@@ -1,11 +1,19 @@
-import java.util.Scanner;
 /**
  * Práctica 3 del curso de Modelado y Programación.
  * @author Yael Lozano Estrada - 319007095, Leslie Geronimo Soto - 320032848
  */
+import java.util.Scanner;
 
+/**
+ * Esta línea define la clase AutoPersonalizado que extiende la clase Auto. Esto quiere decir que hereda propiedades
+ * y métodos de la clase Auto, es decir, puede agregar o sobrescribir comportamientos según sea necesario.
+ */
 public class AutoPersonalizado extends Auto {
 
+    /**
+     * Constructor por omisión que inicializa las variables de la clase padre y llama al método para
+     * personalizar el auto nuevo.
+     */
     public AutoPersonalizado() {
         llantas = "";
         motor = "";
@@ -19,6 +27,9 @@ public class AutoPersonalizado extends Auto {
         personalizarAuto();
     }
 
+    /**
+     * Método que recibe valores por terminal utilizando Scanner. Asigna valores a los atributos del auto.
+     */
     public void personalizarAuto() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Personaliza tu auto estilo Mad Max:");
@@ -43,6 +54,9 @@ public class AutoPersonalizado extends Auto {
         calcularAtributos();
     }
 
+    /**
+     * Calcula las estadísticas según lo seleccionado en personalizarAuto().
+     */
     private void calcularAtributos() {
         // Define los valores para los componentes elegidos
         switch (llantas.toLowerCase()) {
