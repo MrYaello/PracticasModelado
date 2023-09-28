@@ -1,17 +1,20 @@
 import java.util.*;
 public class Autos {
-    int dinero = 10000;
+    int dinero;
+    AutoFactory autoFactory;
 
-    public void AutosDefault() {
+    public Autos(AutoFactory autoFactory) {
+        dinero = 20000;
+        this.autoFactory = autoFactory;
+    }
+
+    public void runAutos() {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Autos para elegir:");
-
-        AutoFactory economicoFactory = new EconomicoFactory();
-        AutoFactory deportivoFactory = new DeportivoFactory();
-        AutoFactory laBestiaFactory = new LaBestiaFactory();
-
-        Auto economico = economicoFactory.crearAuto();
-        Auto deportivo = deportivoFactory.crearAuto();
-        Auto laBestia = laBestiaFactory.crearAuto();
+        Auto economico = autoFactory.crearAuto("economico");
+        Auto deportivo = autoFactory.crearAuto("deportivo");
+        Auto laBestia = autoFactory.crearAuto("bestia");
+        Auto comprado = null;
 
         System.out.println("-- OPCION 1 - ECONOMICO --");
         economico.mostrarCaracteristicas();
@@ -22,23 +25,33 @@ public class Autos {
         System.out.println("-- OPCION 3 - LA BESTIA --");
         laBestia.mostrarCaracteristicas();
 
-        System.out.print("QUIERO EL CARRO DE LA OPCION: ");
-
-
-        Scanner sc = new Scanner(System.in);
+        System.out.println("-- OPCION 4 - PERSONALIZADO --");
         int op = sc.nextInt();
 
         if (op == 1) {
-            dinero -= economico.calcularCosto();
+            comprado = economico;
         } else if (op == 2) {
-            dinero -= deportivo.calcularCosto();
+            comprado = deportivo;
         } else if (op == 3) {
-            dinero -= laBestia.calcularCosto();
-        } 
+            comprado = laBestia;
+        } else if (op == 4) {
+            Auto personalizado = autoFactory.crearAuto("custom");
+            comprado = personalizado;
+        } else {
+            System.err.println("\u001B[31m" + "Seleccionó una opción inválida.");
+            return;
+        }
 
-        System.out.println("Tienes: " + dinero + " pesos.");
-
-        sc.close();
+        if (dinero < comprado.obtenerCosto()) {
+            System.err.println("\u001B[31m" + "No te puedes permitir este auto.");
+            return;
+        } else {
+            dinero -= comprado.obtenerCosto();
+            String purple = "\u001B[35m";
+            System.out.println(purple + "FELICIDADES :D. Disfruta tu nueva adquisición. \n¡Y recuerda siempre conducir con cuidado!" + "\u001B[0m");
+        }
+        comprado.mostrarCaracteristicas();
+        comprado.mostrarEstadisticas();
     }
 }
 

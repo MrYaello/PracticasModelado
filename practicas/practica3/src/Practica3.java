@@ -1,36 +1,45 @@
 import java.util.Scanner;
 
+/**
+ * Práctica 3 del curso de Modelado y Programación.
+ * @author Yael Lozano Estrada - 319007095, Leslie Geronimo Soto - 320032848
+ */
+
 public class Practica3 {
-    
+
+    /**
+   * @param args the command line arguments
+   */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String blue = "\u001B[36m";
         String red = "\u001B[31m";
-        String formatoClasico = "\u001B[0m";
+        String clasico = "\u001B[0m";
+
+        AutoFactory autoFactory = new AutoFactory();
+        Autos autos = new Autos(autoFactory);
 
         boolean continuar = true;
+        System.out.println(blue + "BIENVENIDO. :D");
 
+        /**
+         * Inicia un bucle while que se ejecutará siempre que la variable booleana continuar sea verdadera.
+         */
         while (continuar) {
-            System.out.println(blue + "BIENVENIDO USUARIO. :D \n Por favor, elige alguna de nuestras opciones: \n 1. Elegir auto existente. \n 2. Personalizar mi auto." + formatoClasico);
-            int elegir = sc.nextInt();
+            /**
+             * Llama a un método llamado runAutos() en el objeto.
+             */
+            System.out.println(blue + "Tienes " + autos.dinero + " pesos." + clasico);
+            autos.runAutos();
 
-            if (elegir == 1) {
-                Autos autos = new Autos();
-                autos.AutosDefault();
-            } else if (elegir == 2) {
-                MiAutoPersonalizado miAuto = new MiAutoPersonalizado();
-                miAuto.personalizarAuto();
-            } else {
-                System.err.println("Elige una opción correcta.");
-            }
+            System.out.println(clasico + "¿Deseas adquirir otro auto? (y/n): " + red);
+            String respuesta = sc.next();
 
-            sc.nextInt();
-
-            System.out.println(formatoClasico + "¿Deseas personalizar otro auto? (1.si \n 2. no): " + red);
-            int respuesta = sc.nextInt();
-
-            if (respuesta != 1) {
+            if (!respuesta.equalsIgnoreCase("y")) {
                 System.out.println("¡Hasta luego!");
+                /**
+                 * Establece la variable continuar en falso, lo que hará que el bucle while se detenga en la próxima iteración.
+                 */
                 continuar = false;
             }
         }
