@@ -3,13 +3,9 @@
  * @author Yael Lozano Estrada - 319007095, Leslie Geronimo Soto - 320032848
  */
 
- /**
- * Define la clase Deportivo y especifica que extiende la clase Auto. Esto significa que Deportivo hereda propiedades 
- * y métodos de la clase Auto.
- */
 public class Deportivo extends Auto {
     public Deportivo() {
-        nombre = "Deportivo"; /** Establece el atributo nombre de la instancia de Deportivo en "Deportivo".*/ 
+        nombre = "Deportivo";
         llantas = "Deportivas";
         motor = "Deportivo";
         carroceria = "Camion";

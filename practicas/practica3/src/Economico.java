@@ -1,16 +1,11 @@
-
 /**
  * Práctica 3 del curso de Modelado y Programación.
  * @author Yael Lozano Estrada - 319007095, Leslie Geronimo Soto - 320032848
  */
 
-/**
- * Define la clase Economico y especifica que extiende la clase Auto. Esto significa que Economico hereda propiedades 
- * y métodos de la clase Auto.
- */
 public class Economico extends Auto {
     public Economico() {
-        nombre = "Economico"; /** Establece el atributo nombre de la instancia de Economico en "Economico".*/ 
+        nombre = "Economico";
         llantas = "Simple";
         motor = "Diesel";
         carroceria = "Casual";
@@ -32,3 +27,4 @@ public class Economico extends Auto {
         System.out.println("Costo: " + obtenerCosto() + " pesos.");
     }
 }
+
