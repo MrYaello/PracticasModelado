@@ -3,7 +3,6 @@
  * @author Yael Lozano Estrada - 319007095, Leslie Geronimo Soto - 320032848
  */
 public class AutoFactory {
-
     /**
      * 
      * @param auto

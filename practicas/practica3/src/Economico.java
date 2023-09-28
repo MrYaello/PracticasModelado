@@ -32,4 +32,3 @@ public class Economico extends Auto {
         System.out.println("Costo: " + obtenerCosto() + " pesos.");
     }
 }
-

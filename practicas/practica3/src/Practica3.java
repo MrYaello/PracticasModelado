@@ -47,5 +47,3 @@ public class Practica3 {
         sc.close();
     }
 }
-
-
