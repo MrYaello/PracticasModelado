@@ -1,3 +1,13 @@
+(deftemplate on-top-of
+(slot upper)
+(slot lower)
+)
+
+(deftemplate goal
+(slot move)
+(slot on-top)
+)
+
 (deffacts initial-state
 (block A)
 (block B)
@@ -13,46 +23,15 @@
 (on-top-of (upper D)(lower E))
 (on-top-of (upper E)(lower F))
 (on-top-of (upper F)(lower floor))
-(goal (move F)(on-top C)) )
-
-(deftemplate on-top-of
-(slot upper)
-(slot lower)
-)
-
-(deftemplate goal
-(slot move)
-(slot on-top)
-)
-
-(defrule on-top-of
-(on-top-of ?upper ?lower)
-=>
-(assert (on-top-of ?upper ?lower))
-)
+(goal (move D)(on-top A)) )
 
 (defrule final
-(goal (move ?move) (on-top ?topOf))
-(on-top-of (upper ?upper&nothing)(lower ?lower))
+?f1 <- (goal (move ?move) (on-top ?topOf))
+?f2 <- (on-top-of (upper ?upper&nothing)(lower ?topOf))
+?f3 <- (on-top-of (upper ?upper&nothing)(lower ?move))
 =>
-(on-top-of (upper ?move) (lower ?block))
-)
-
-(defrule upper
-?f1 <- (upper ?block)
-=>
-(retract ?f1)
-(assert(upper ?block))
-)
-
-(defrule move 
-(move ?move)
-(on-top-of ?block)
-(upper nothing)
-(lower ?block)
-=>
-(retract ?f1)
-(assert (on-top-of (upper ?move)(lower ?block)))
+(assert(on-top-of (upper ?move) (lower ?topOf)))
+(retract ?f1 ?f2 ?f3)
 )
 
 
