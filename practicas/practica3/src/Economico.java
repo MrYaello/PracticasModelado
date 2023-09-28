@@ -10,7 +10,7 @@
  */
 public class Economico extends Auto {
     public Economico() {
-        nombre = "Economico";
+        nombre = "Economico"; /** Establece el atributo nombre de la instancia de Economico en "Economico".*/ 
         llantas = "Simple";
         motor = "Diesel";
         carroceria = "Casual";

@@ -9,7 +9,7 @@
  */
 public class Deportivo extends Auto {
     public Deportivo() {
-        nombre = "Deportivo";
+        nombre = "Deportivo"; /** Establece el atributo nombre de la instancia de Deportivo en "Deportivo".*/ 
         llantas = "Deportivas";
         motor = "Deportivo";
         carroceria = "Camion";

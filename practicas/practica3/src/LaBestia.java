@@ -21,7 +21,7 @@ public class LaBestia extends Auto {
         motor = "Turbo";  /* Establece el atributo motor en "Turbo". */ 
         carroceria = "Camion"; /*  Establece el atributo carroceria en "Camion".*/
         armas = "Lanzallamas"; /* Establece el atributo armas en "Lanzallamas". */
-        blindaje = "Tanque"; /*  Establece el atributo blindaje en "Tanque". */
+        blindaje = "Tanque"; /*  Establece el atributo blindaje en "Tanque".*/
 
         /**
          * Calculan el valor del atributo ataque como la suma de los valores indicados.
