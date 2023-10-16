@@ -1,10 +1,10 @@
-# GERONIMO SOTO LESLIE - 320032848 #
-# LOZANO ESTRADA YAEL - #
 
+# Practica 4 del curso de Modelado y Programación.
+## Patrones de diseño 
+### Yael Lozano Estrada 319007095
+### Leslie Geronimo Soto 320032848
 
-##PRACTICA 4##
-
-#ACTIVIDAD 1#
+## ACTIVIDAD 1 
 Menciona los principios de diseño esenciales de los patrones Adapter y Decorator. Menciona una desventaja de cada patron.
 
 
