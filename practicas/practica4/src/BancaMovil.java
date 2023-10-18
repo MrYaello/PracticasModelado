@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class BancaMovil {
     Cliente cliente;
-    public Banco santander = new BancoSantander();
-    public Banco bancomer = new BancoBancomer();
+    public static Banco santander = new BancoSantander();
+    public static Banco bancomer = new BancoBancomer();
     Scanner sc = new Scanner(System.in);
     public void nuevoCliente() {
         String nombre, rfc;
@@ -100,16 +100,16 @@ public class BancaMovil {
         boolean aprobado = false;
         switch (opcion) {
             case "B":
-                adapter.solicitarPrestamo(cliente, "bancomer");
+                aprobado = adapter.solicitarPrestamo(cliente, "bancomer");
                 break;
             case "S":
-                adapter.solicitarPrestamo(cliente, "santander");
+                aprobado = adapter.solicitarPrestamo(cliente, "santander");
                 break;
             default:
                 System.out.println(opcion + " no es una opción válida.");
                 return;
         }
-        System.out.println("Su préstamo" + (!aprobado ? " NO " : " ") + "ha sido aprobado.");
+        System.out.println("Su préstamo" + (aprobado ? " " : " NO ") + "ha sido aprobado.");
     }
 
     public void consultarCuenta() {

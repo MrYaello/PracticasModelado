@@ -19,21 +19,21 @@ public class Adapter extends BancaMovil{
         String[] cuentaBancaria = null;
         if (banco.equals("santander")) {
             cuentaBancaria = santander.getCuenta(cliente);
-            cuenta = cuentaBancaria[2] + "\n" +
+            cuenta = cuentaBancaria[2] + " {\n" +
                     "Nombre: " + cuentaBancaria[0].split(" ")[0] + "\n" +
                     "Edad: " + cuentaBancaria[0].split(" ")[1] + "\n" +
                     "Score: " + cuentaBancaria[1] + "\n" +
                     "Tasa interés: " + cuentaBancaria[3] + "\n" +
-                    "Anualidad: " + cuentaBancaria[4];
+                    "Anualidad: " + cuentaBancaria[4] + " }";
 
         } else if (banco.equals("bancomer")) {
             cuentaBancaria = bancomer.getCuenta(cliente);
-            cuenta = cuentaBancaria[0] + "\n" +
+            cuenta = cuentaBancaria[0] + " {\n" +
                     "Nombre: " + cuentaBancaria[1] + "\n" +
                     "Edad: " + cuentaBancaria[3] + "\n" +
                     "Score: " + cuentaBancaria[2] + "\n" +
                     "Tasa interés: " + cuentaBancaria[4] + "\n" +
-                    "Anualidad: " + cuentaBancaria[5];
+                    "Anualidad: " + cuentaBancaria[5] + " }";
         }
         return cuenta;
     }
