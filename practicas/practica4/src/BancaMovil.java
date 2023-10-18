@@ -14,8 +14,8 @@ public class BancaMovil {
     public void nuevoCliente() {
         String nombre, rfc;
         int edad, score;
-        System.out.println("Ingrese su nombre:");
-        nombre = sc.nextLine();
+        System.out.println("Ingrese su nombre de pila:");
+        nombre = sc.next();
         System.out.println("Ingrese su edad:");
         edad = sc.nextInt();
         System.out.println("Ingrese su RFC:");
@@ -78,7 +78,7 @@ public class BancaMovil {
             System.out.println("La cuenta no existe.");
             return;
         }
-        System.out.println("Bienvenido " + cliente.getNombre());
+        System.out.println("Bienvenido/a " + cliente.getNombre());
     }
     
     public String mostarCuentas() {

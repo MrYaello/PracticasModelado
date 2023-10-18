@@ -18,6 +18,7 @@ public class Main extends BancaMovil {
                 if (cliente) {
                     banca.clienteExistente();
                     if (banca.cliente == null) continue;
+                    else logeado = true;
                     System.out.println(banca.mostarCuentas());
                 } else {
                     banca.nuevoCliente();
@@ -28,7 +29,7 @@ public class Main extends BancaMovil {
             System.out.println("1. Crear nueva cuenta.");
             System.out.println("2. Solicitar prestamo.");
             System.out.println("3. Obtener información detallada de la cuenta.");
-            System.out.println("4. Salir.");
+            System.out.println("4. Cerrar Sesión.");
             int opcion = sc.nextInt();
             switch (opcion) {
                 case 1:
@@ -41,7 +42,7 @@ public class Main extends BancaMovil {
                     banca.consultarCuenta();
                     break;
                 case 4:
-                    salir = true;
+                    logeado = false;
                     break;
                 default:
                     System.out.println(opcion + " no es una opción válida.");

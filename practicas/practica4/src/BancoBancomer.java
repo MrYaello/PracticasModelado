@@ -35,7 +35,7 @@ public class BancoBancomer extends Banco {
     @Override
     public String[] getCuenta(Cliente cliente) {
         CuentaBancaria cuenta = getCuentaPorCliente(cliente);
-        System.out.println(cliente.getNombre());
+        System.out.println(cliente);
         return new String[]{
                 cuenta.getNumeroCuenta(),
                 cliente.getNombre(),

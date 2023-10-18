@@ -47,4 +47,10 @@ public class Cliente {
     public void setScoreBuro(int scoreBuro) {
         this.scoreBuro = scoreBuro;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Cliente eq = (Cliente) obj;
+        return eq.nombre.equals(nombre) && eq.edad == edad && eq.scoreBuro == scoreBuro;
+    }
 }
