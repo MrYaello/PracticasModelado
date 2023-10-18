@@ -7,6 +7,7 @@ public class CuentaBancaria {
     private float tasaInteres;
     private int anualidad;
     private String numeroCuenta;
+    private String contrasenia;
 
     public CuentaBancaria(Cliente cliente, float tasaInteres, int anualidad, String numeroCuenta) {
         this.cliente = cliente;
@@ -45,5 +46,13 @@ public class CuentaBancaria {
 
     public void setNumeroCuenta(String numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
+    }
+
+    public boolean validaContrasenia(String contrasenia) {
+        return contrasenia.equals(this.contrasenia);
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }
