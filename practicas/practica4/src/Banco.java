@@ -12,6 +12,8 @@ public abstract class Banco {
     float tasaBase;
     int anualidadBase;
 
+    public abstract void agregarCuenta(Cliente cliente);
+
     public void nuevaCuenta(CuentaBancaria cuentaBancaria) {
         cuentasBancarias.add(cuentaBancaria);
     }
