@@ -47,9 +47,80 @@ public class BancaMovil {
                 break;
             default:
                 System.out.println(opcion + " no es una opción válida.");
-                return;
         }
     }
 
-    public void clienteExistente()
+    public void clienteExistente() {
+        String numeroCuenta;
+        System.out.println("Ingrese el número de cuenta:");
+        numeroCuenta = sc.next();
+        switch (numeroCuenta.charAt(0)) {
+            case 'S':
+                for (CuentaBancaria cuenta : santander.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(numeroCuenta)) {
+                        cliente = cuenta.getCliente();
+                    }
+                }
+                break;
+            case 'B':
+                for (CuentaBancaria cuenta : bancomer.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(numeroCuenta)) {
+                        cliente = cuenta.getCliente();
+                    }
+                }
+                break;
+            default:
+                System.out.println(numeroCuenta + " no es un número de cuenta válido.");
+                return;
+        }
+        System.out.println("Bienvenido " + cliente.getNombre());
+    }
+
+    public void solicitarPrestamo() {
+        Adapter adapter = new Adapter();
+        String opcion = "";
+        System.out.println("Seleccione el banco donde solicitará el prestamo: B - Bancomer, S - Santander");
+        opcion = sc.next().toUpperCase();
+        if ((opcion.equals("B") && bancomer.getCuentaPorCliente(cliente) == null) ||
+                (opcion.equals("S") && santander.getCuentaPorCliente(cliente) == null)) {
+            System.out.println("No tiene una cuenta en este banco.");
+            return;
+        }
+        boolean aprobado = false;
+        switch (opcion) {
+            case "B":
+                adapter.solicitarPrestamo(cliente, "bancomer");
+                break;
+            case "S":
+                adapter.solicitarPrestamo(cliente, "santander");
+                break;
+            default:
+                System.out.println(opcion + " no es una opción válida.");
+                return;
+        }
+        System.out.println("Su préstamo" + (!aprobado ? " NO " : " ") + "ha sido aprobado.");
+    }
+
+    public void consultarCuenta() {
+        Adapter adapter = new Adapter();
+        String opcion = "";
+        System.out.println("Seleccione el banco del que consultara su cuenta: B - Bancomer, S - Santander");
+        opcion = sc.next().toUpperCase();
+        if ((opcion.equals("B") && bancomer.getCuentaPorCliente(cliente) == null) ||
+                (opcion.equals("S") && santander.getCuentaPorCliente(cliente) == null)) {
+            System.out.println("No tiene una cuenta en este banco.");
+            return;
+        }
+        switch (opcion) {
+            case "B":
+                System.out.println(adapter.getCuenta(cliente, "bancomer"));
+                break;
+            case "S":
+                System.out.println(adapter.getCuenta(cliente, "santander"));
+                break;
+            default:
+                System.out.println(opcion + " no es una opción válida.");
+                return;
+        }
+    }
 }
