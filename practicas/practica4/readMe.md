@@ -51,3 +51,6 @@ Si bien los patrones Adapter y Decorator son útiles en muchos casos, también t
 4. **Dificultad para eliminar funcionalidad**: En algunos casos, puede ser complicado eliminar la funcionalidad agregada por decoradores específicos sin afectar a otros decoradores. Esto puede llevar a problemas de mantenimiento y refactorización.
 
 En resumen, tanto el patrón Adapter como el Decorator son herramientas útiles en el diseño de software, pero deben usarse con cuidado y consideración de las desventajas potenciales. Es importante equilibrar los beneficios que aportan con las complejidades y problemas que pueden introducir en el código.
+
+> [!NOTE]
+> El método main se encuentra en la clase Main, para correr la práctica ejecutar dicha clase. 
