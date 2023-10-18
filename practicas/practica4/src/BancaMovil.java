@@ -1,10 +1,11 @@
-import java.util.Random;
-import java.util.Scanner;
-
 /**
  * Práctica 4 del curso de Modelado y Programación.
  * @author Yael Lozano Estrada - 319007095, Leslie Geronimo Soto - 320032848
  */
+
+import java.util.Random;
+import java.util.Scanner;
+
 public class BancaMovil {
     Cliente cliente;
     public Banco santander = new BancoSantander();
@@ -28,7 +29,7 @@ public class BancaMovil {
     }
 
     public void crearCuenta() {
-        String opcion = "";
+        String opcion;
         System.out.println("Seleccione el banco donde se creará la cuenta: B - Bancomer, S - Santander");
         opcion = sc.next().toUpperCase();
         if ((opcion.equals("B") && bancomer.getCuentaPorCliente(cliente) != null) ||
