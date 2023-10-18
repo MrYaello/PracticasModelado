@@ -54,7 +54,7 @@ public class BancaMovil {
     public void clienteExistente() {
         String numeroCuenta;
         System.out.println("Ingrese el número de cuenta:");
-        numeroCuenta = sc.next();
+        numeroCuenta = sc.next().toUpperCase();
         switch (numeroCuenta.charAt(0)) {
             case 'S':
                 for (CuentaBancaria cuenta : santander.getCuentasBancarias()) {
@@ -74,7 +74,17 @@ public class BancaMovil {
                 System.out.println(numeroCuenta + " no es un número de cuenta válido.");
                 return;
         }
+        if (cliente == null) {
+            System.out.println("La cuenta no existe.");
+            return;
+        }
         System.out.println("Bienvenido " + cliente.getNombre());
+    }
+    
+    public String mostarCuentas() {
+        return "Tiene las siguientes cuentas: " +
+                (santander.getCuentaPorCliente(cliente) != null ? "Santander\n" : "") +
+                (bancomer.getCuentaPorCliente(cliente) != null ? "Bancomer\n" : "");
     }
 
     public void solicitarPrestamo() {
