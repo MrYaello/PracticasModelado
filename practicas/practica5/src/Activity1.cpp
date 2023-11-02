@@ -14,7 +14,7 @@
 const int N = 3; 
 
 /**
-Metodo para generar una matriz con números aleatorios.
+ * Metodo para generar una matriz con números aleatorios.
 */
 void generateRandomMatrix(std::vector<std::vector<int>>& matrix) {
     std::random_device rd;
