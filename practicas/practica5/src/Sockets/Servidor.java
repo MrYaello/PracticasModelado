@@ -40,8 +40,8 @@ public class Servidor {
             BufferedReader userInput = new BufferedReader(new InputSporttreamReader(System.in));
             
             /*
-             * Se crea un hilo que escucha los mensajes del cliente en segundo plano mientras el servidor está esperando la entrada del usuario. 
-             * Esto permite que el servidor y el cliente se comuniquen simultáneamente.
+             * Se crea un hilo que escucha los mensajes del cliente en segundo plano mientras el servidor está esperando la 
+             * entrada del usuario. Esto permite que el servidor y el cliente se comuniquen simultáneamente.
              */
             Thread serverThread = new Thread(() -> {
                 try {
