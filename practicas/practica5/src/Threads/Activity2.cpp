@@ -13,46 +13,47 @@
 #include <future>
 #include <thread>
 
-std::atomic<int> value(O);
+std::atomic<int> value(-1);
 
 void filterRed(cv::Mat img, int rows) {
-    for (int i = 0; i < rows; ++i) {
+    value++;
+    for (int j = 0; j < rows; j++) {
         img.at<cv::Vec3b>(value,j)[0] = 0; // B
         img.at<cv::Vec3b>(value,j)[1] = 0; // G
         img.at<cv::Vec3b>(value,j)[2]; // R
     }
-    value++;
 }
 
 void filterBlue(cv::Mat img, int rows) {
-    for (int i = 0; i < rows; ++i) {
+    value++;
+    for (int j = 0; j < rows; j++) {
         img.at<cv::Vec3b>(value,j)[0]; // B
         img.at<cv::Vec3b>(value,j)[1] = 0; // G
         img.at<cv::Vec3b>(value,j)[2] = 0; // R
     }
-    value++;
 }
 
 void filterGrayScale(cv::Mat img, int rows) {
-    int var = (img.at<cv::Vec3b>(value,j)[0] + img.at<cv::Vec3b>(value,j)[1] + img.at<cv::Vec3b>(value,j)[2]) / 3
-    for (int i = 0; i < rows; ++i) {
+    value++;
+    for (int j = 0; j < rows; j++) {
+        int var = (img.at<cv::Vec3b>(value,j)[0] + img.at<cv::Vec3b>(value,j)[1] + img.at<cv::Vec3b>(value,j)[2]) / 3;
         img.at<cv::Vec3b>(value,j)[0] = var; // B
         img.at<cv::Vec3b>(value,j)[1] = var; // G
         img.at<cv::Vec3b>(value,j)[2] = var; // R
     }
-    value++;
 }
 
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cout << "Uso: Activity2 inFilePath" << std::endl;
+        return -1;
     }
 
     char *path  = argv[1];
 
     cv::Mat img = cv::imread(path, cv::IMREAD_UNCHANGED);
-    cv::Mat color = img.clone;
+    cv::Mat color = img;
 
     if (img.empty()) {
         std::cerr << "Error al cargar la imagen." << std::endl;
@@ -62,15 +63,18 @@ int main(int argc, char* argv[]) {
     std::vector<std::thread> threads;
 
     for (int i = 0; i < color.cols; ++i) {
-        threads.emplace_back(filterBlue, cv::ref(color), color.rows);
+        threads.emplace_back(filterGrayScale, color, color.rows);
     }
  
     for (auto& thread : threads) {
         thread.join();
     }
+    cv::namedWindow("Imagen", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Imagen", color);
+    cv::waitKey(0);
 
-
-    if (cv::imwrite("imagenes/color.jpg", color)) {
+    cv::imwrite("./imagenes/color.jpg", color);
+    if (cv::imwrite("./imagenes/color.jpg", color)) {
         std::cout << "Imagen Guardada" << std::endl;
     }
 

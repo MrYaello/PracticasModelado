@@ -14,18 +14,19 @@
 #include <thread>
 
 void blend(cv::Mat img, cv::Mat result, int start, int end) {
-    for (int i = 0; i < img.cols; ++i) {
+    for (int i = 0; i < img.cols; i++) {
         for (int j = start; j <= end; j++) {
-            result.at<cv::Vec3b>(value,j)[0] = img.at<cv::Vec3b>(value,j)[0]; // B
-            result.at<cv::Vec3b>(value,j)[1] = img.at<cv::Vec3b>(value,j)[1]; // G
-            result.at<cv::Vec3b>(value,j)[2] = img.at<cv::Vec3b>(value,j)[2]; // R
+            result.at<cv::Vec3b>(i,j)[0] = img.at<cv::Vec3b>(i,j)[0]; // B
+            result.at<cv::Vec3b>(i,j)[1] = img.at<cv::Vec3b>(i,j)[1]; // G
+            result.at<cv::Vec3b>(i,j)[2] = img.at<cv::Vec3b>(i,j)[2]; // R
         }
     }
 }
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        std::cout << "Uso: Activity2 img1FilePath img2FilePath" << std::endl;
+        std::cout << "Uso: Activity3 img1FilePath img2FilePath" << std::endl;
+        return -1;
     }
 
     char *path1  = argv[1];
@@ -45,14 +46,18 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    std::thread thread1;
-    std::thread thread2;
+    std::thread t1(blend, img1, result, 0, img1.rows / 2);
+    std::thread t2(blend, img2, result, img1.rows / 2, img1.rows);
+ 
+    t1.join();
+    t2.join();
 
-    thread1.emplace_back(blend, cv::ref(img1), cv::ref(result), 0, img1.rows / 2);
-    thread1.emplace_back(blend, cv::ref(img2), cv::ref(result), img1.rows / 2, img1.rows);
+    cv::namedWindow("Imagen", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Imagen", result);
+    cv::waitKey(0);
 
-
-    if (cv::imwrite("imagenes/blend.jpg", result)) {
+    cv::imwrite("./imagenes/blend.jpg", result);
+    if (cv::imwrite("./imagenes/blend.jpg", result)) {
         std::cout << "Imagen Guardada" << std::endl;
     }
 
