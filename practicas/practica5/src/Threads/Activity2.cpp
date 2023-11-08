@@ -13,10 +13,8 @@
 #include <future>
 #include <thread>
 
-std::atomic<int> value(-1);
 
-void filterRed(cv::Mat img, int rows) {
-    value++;
+void filterRed(int value, cv::Mat img, int rows) {
     for (int j = 0; j < rows; j++) {
         img.at<cv::Vec3b>(value,j)[0] = 0; // B
         img.at<cv::Vec3b>(value,j)[1] = 0; // G
@@ -24,8 +22,7 @@ void filterRed(cv::Mat img, int rows) {
     }
 }
 
-void filterBlue(cv::Mat img, int rows) {
-    value++;
+void filterBlue(int value, cv::Mat img, int rows) {
     for (int j = 0; j < rows; j++) {
         img.at<cv::Vec3b>(value,j)[0]; // B
         img.at<cv::Vec3b>(value,j)[1] = 0; // G
@@ -33,8 +30,7 @@ void filterBlue(cv::Mat img, int rows) {
     }
 }
 
-void filterGrayScale(cv::Mat img, int rows) {
-    value++;
+void filterGrayScale(int value, cv::Mat img, int rows) {
     for (int j = 0; j < rows; j++) {
         int var = (img.at<cv::Vec3b>(value,j)[0] + img.at<cv::Vec3b>(value,j)[1] + img.at<cv::Vec3b>(value,j)[2]) / 3;
         img.at<cv::Vec3b>(value,j)[0] = var; // B
@@ -42,7 +38,6 @@ void filterGrayScale(cv::Mat img, int rows) {
         img.at<cv::Vec3b>(value,j)[2] = var; // R
     }
 }
-
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -62,8 +57,8 @@ int main(int argc, char* argv[]) {
 
     std::vector<std::thread> threads;
 
-    for (int i = 0; i < color.cols; ++i) {
-        threads.emplace_back(filterGrayScale, color, color.rows);
+    for (int i = 0; i < color.rows; ++i) {
+        threads.emplace_back(filterGrayScale, i, color, color.cols);
     }
  
     for (auto& thread : threads) {

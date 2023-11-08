@@ -13,13 +13,11 @@
 #include <future>
 #include <thread>
 
-void blend(cv::Mat img, cv::Mat result, int start, int end) {
-    for (int i = 0; i < img.cols; i++) {
-        for (int j = start; j <= end; j++) {
-            result.at<cv::Vec3b>(i,j)[0] = img.at<cv::Vec3b>(i,j)[0]; // B
-            result.at<cv::Vec3b>(i,j)[1] = img.at<cv::Vec3b>(i,j)[1]; // G
-            result.at<cv::Vec3b>(i,j)[2] = img.at<cv::Vec3b>(i,j)[2]; // R
-        }
+void blend(int i, cv::Mat img, cv::Mat result, int start, int end) {
+    for (int j = start; j <= end; j++) {
+        result.at<cv::Vec3b>(i,j)[0] = img.at<cv::Vec3b>(i,j)[0]; // B
+        result.at<cv::Vec3b>(i,j)[1] = img.at<cv::Vec3b>(i,j)[1]; // G
+        result.at<cv::Vec3b>(i,j)[2] = img.at<cv::Vec3b>(i,j)[2]; // R
     }
 }
 
@@ -46,11 +44,15 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    std::thread t1(blend, img1, result, 0, img1.rows / 2);
-    std::thread t2(blend, img2, result, img1.rows / 2, img1.rows);
+    std::vector<std::thread> threads;
+
+    for (int i = 0; i < img1.rows; i++) {
+        threads.emplace_back(blend, i, img2, result, img1.cols / 2, img1.cols);
+    }
  
-    t1.join();
-    t2.join();
+    for (auto& thread : threads) {
+        thread.join();
+    }
 
     cv::namedWindow("Imagen", cv::WINDOW_AUTOSIZE);
     cv::imshow("Imagen", result);
