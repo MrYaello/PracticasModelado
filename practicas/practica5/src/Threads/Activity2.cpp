@@ -40,12 +40,13 @@ void filterGrayScale(int value, cv::Mat img, int rows) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        std::cout << "Uso: Activity2 inFilePath" << std::endl;
+    if (argc != 3) {
+        std::cout << "Uso: Activity2 inFilePath outFilePath" << std::endl;
         return -1;
     }
 
-    char *path  = argv[1];
+    char *path = argv[1];
+    char *outPath = argv[2];
 
     cv::Mat img = cv::imread(path, cv::IMREAD_UNCHANGED);
     cv::Mat color = img;
@@ -58,18 +59,17 @@ int main(int argc, char* argv[]) {
     std::vector<std::thread> threads;
 
     for (int i = 0; i < color.rows; ++i) {
-        threads.emplace_back(filterGrayScale, i, color, color.cols);
+        threads.emplace_back(filterRed, i, color, color.cols);
     }
  
     for (auto& thread : threads) {
         thread.join();
     }
-    cv::namedWindow("Imagen", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Imagen", color);
+    cv::namedWindow("Preview", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Preview", color);
     cv::waitKey(0);
 
-    cv::imwrite("./imagenes/color.jpg", color);
-    if (cv::imwrite("./imagenes/color.jpg", color)) {
+    if (cv::imwrite(outPath, color)) {
         std::cout << "Imagen Guardada" << std::endl;
     }
 

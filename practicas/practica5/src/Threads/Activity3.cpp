@@ -22,13 +22,14 @@ void blend(int i, cv::Mat img, cv::Mat result, int start, int end) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        std::cout << "Uso: Activity3 img1FilePath img2FilePath" << std::endl;
+    if (argc != 4) {
+        std::cout << "Uso: Activity3 img1FilePath img2FilePath outFilePath" << std::endl;
         return -1;
     }
 
     char *path1  = argv[1];
     char *path2 = argv[2];
+    char *outPath = argv[3];
 
     cv::Mat img1 = cv::imread(path1, cv::IMREAD_UNCHANGED);
     cv::Mat img2 = cv::imread(path2, cv::IMREAD_UNCHANGED);
@@ -54,12 +55,11 @@ int main(int argc, char* argv[]) {
         thread.join();
     }
 
-    cv::namedWindow("Imagen", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Imagen", result);
+    cv::namedWindow("Preview", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Preview", result);
     cv::waitKey(0);
 
-    cv::imwrite("./imagenes/blend.jpg", result);
-    if (cv::imwrite("./imagenes/blend.jpg", result)) {
+    if (cv::imwrite(outPath, result)) {
         std::cout << "Imagen Guardada" << std::endl;
     }
 
