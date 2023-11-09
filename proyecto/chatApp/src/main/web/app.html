@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset='utf-8'>
+    <!-- meta http-equiv="refresh" content="10" -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatApp</title>
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            height: 100vh;
+            margin: 0px;
+            position: relative;
+            background-color: #f0f2f5;
+        }
+
+        nav {
+            background: white;
+        }
+
+        nav {
+            position: sticky;
+            position: -webkit-sticky;
+            top: 0;
+            box-shadow: 0 4px 2px -2px gray;
+            padding: 0;
+            margin: 0;
+            z-index: 5;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            min-height: 8vh;
+        }
+
+        .text-logo {
+            font: 32px 'Agbalumo', serif;
+            align-self: center;
+            text-align: center;
+            color: #096ad9;
+            text-shadow: 3px 3px 2px #d3d3d3;
+            letter-spacing: 0px;
+        }
+    </style><link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="https://raw.githubusercontent.com/MrYaello/assets/main/icon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+</head>
+<body id="body" class="">
+<nav>
+    <div class="text-logo">ChatApp</div>
+</nav>
+<div>Bienvenido/a {username}</div>
+<form method="post">
+<label for="message"></label>
+<input id="message" type="text" name="message" autocomplete="off"/>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script></script>
+</body>
+</html>

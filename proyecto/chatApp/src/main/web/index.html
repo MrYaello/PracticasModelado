@@ -2,11 +2,154 @@
 <html lang="es">
 <head>
     <meta charset='utf-8'>
+    <!-- meta http-equiv="refresh" content="10" -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ChatApp</title>
-    <link rel='stylesheet' href='src/main/web/assets/style.css'>
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            height: 112vh;
+            margin: 0px;
+            position: relative;
+            background-color: #f0f2f5;
+        }
+
+        .pre-nav, nav {
+            background: white;
+        }
+
+        .pre-nav {
+            height: 12vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .logo {
+            height: 10vh;
+            align-self: center;
+            -webkit-filter: drop-shadow(3px 3px 2px #d3d3d3);
+            filter: drop-shadow(3px 3px 5px #d3d3d3);
+
+        }
+
+        nav {
+            position: sticky;
+            position: -webkit-sticky;
+            top: 0;
+            box-shadow: 0 4px 2px -2px gray;
+            padding: 0;
+            margin: 0;
+            z-index: 5;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            min-height: 8vh;
+        }
+
+        button {
+            font: 32px 'Agbalumo', serif;
+            height: 9vh;
+            width: 15vw;
+            background-color: #096ad9;
+            border-radius: 60px;
+            border: none;
+            color: white;
+            right: 10px;
+            position: absolute;
+            bottom: 2vh;
+            transition: background-color 1s;
+            transition: color 0.5;
+        }
+
+        button:hover {
+            background-color: black;
+            color: #096ad9;
+        }
+
+        button:active {
+            transition: none;
+            background-color: #096ad9;
+            color: white;
+            box-shadow: inset 0px 0px 50px 10px rgba(0, 0, 0, 0.6);
+
+        }
+
+        .text-logo {
+            font: 32px 'Agbalumo', serif;
+            align-self: center;
+            text-align: center;
+            color: #096ad9;
+            text-shadow: 3px 3px 2px #d3d3d3;
+            letter-spacing: 0px;
+        }
+
+        form {
+            top: 25%;
+            position: relative;
+            background: white;
+            padding-top: 20px;
+            padding-bottom: 4vh;
+            height: 80px;
+            width: 396px;
+            margin: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+            text-align: center;
+            transition: height 0.5s;
+        }
+
+        #title {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 5px 0px 10px 0px;
+        }
+
+        #name {
+            border: 1px solid #dddfe2;
+            height: 40px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            border-radius: 6px;
+            margin: auto;
+            width: 284px;
+        }
+
+        #label {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            position: absolute;
+            user-select: none;
+            top: 69px;
+            left: 56px;
+            color: #ccd0d5;
+        }
+
+        input[type=text] {
+            padding: 2px 15px;
+        }
+
+        #error {
+            color: red;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            visibility: hidden;
+            height: 30px;
+            margin-top: 10px;
+            transition: visibility 0.2s;
+        }
+    </style>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="icon" type="image/vnd.microsoft.icon" href="assets/icon.ico">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="https://raw.githubusercontent.com/MrYaello/assets/main/icon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
@@ -14,7 +157,7 @@
 </head>
 <body id="body" class="">
 <div class="pre-nav">
-    <img class="logo" src="src/main/web/assets/logo.png" alt="Logo ChatApp">
+    <img class="logo" src="https://raw.githubusercontent.com/MrYaello/assets/main/logo.png" alt="Logo ChatApp">
 </div>
 <nav>
     <div class="text-logo">ChatApp</div>
@@ -26,6 +169,62 @@
     <div id="error">Error</div> 
 </form>
 <button id="button" type="submit" onclick="return validateForm()">Entrar</button>
-<script src="src/main/web/assets/script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    let input = document.getElementById("name");
+    let label = document.getElementById("label");
+    let form = document.getElementsByClassName("form")[0];
+    let error = document.getElementById("error");
+
+    input.addEventListener("focusin", () => {
+        document.getElementById("button").scrollIntoView();
+        label.style.color = "#dddfe2";
+        hideError();
+    })
+
+    input.addEventListener("focusout", () => {
+        label.style.color = "#ccd0d5";
+        if (input.value == "") label.style.opacity = "100%";
+        hideError();
+    })
+
+    input.addEventListener("input", () => {
+        label.style.opacity = "0%";
+    })
+
+    const navBar = document.querySelector(".navigation-bar");
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+
+    function showError(msg) {
+        error.textContent = msg;
+        error.style.visibility = "visible";
+        form.style.height = "110px";
+        input.style.border = "1px solid red";
+    }
+
+    function hideError() {
+        error.style.visibility = "hidden";
+        form.style.height = "80px";
+        input.style.border = "1px solid #dddfe2";
+    }
+
+    function validateForm() {
+        let name = document.forms["user"]["name"].value;
+        if (name == "") {
+            showError("Debe proporcionar un nombre de usuario.");
+            return false;
+        } else if (name.length > 8) {
+            showError("El nombre de usuario no puede ser mayor a 8 caracteres.")
+            return false;
+        } else {
+            window.location.href = `?name=${name}`;
+            return true;
+        }
+    }
+
+    if (document.location.href.includes("?name")) {
+        window.location.href = ".";
+    }
+</script>
 </body>
 </html>
