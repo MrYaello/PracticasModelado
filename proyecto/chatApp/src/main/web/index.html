@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatApp</title>
+    <link rel='stylesheet' href='src/main/web/assets/style.css'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="assets/icon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+</head>
+<body id="body" class="">
+<div class="pre-nav">
+    <img class="logo" src="src/main/web/assets/logo.png" alt="Logo ChatApp">
+</div>
+<nav>
+    <div class="text-logo">ChatApp</div>
+</nav>
+<form class="form" name="user" onsubmit="return validateForm()">
+    <div id="title">Iniciar sesión en ChatApp</div>
+    <label for="name" id="label">Usuario</label>
+    <input id="name" type="text" name="name" autocomplete="off"/>
+    <div id="error">Error</div> 
+</form>
+<button id="button" type="submit" onclick="return validateForm()">Entrar</button>
+<script src="src/main/web/assets/script.js"></script>
+</body>
+</html>
