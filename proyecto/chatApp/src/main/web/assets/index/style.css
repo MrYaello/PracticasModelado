@@ -1,0 +1,266 @@
+html {
+    height: 100%;
+    width: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    height: 112vh;
+    margin: 0px;
+    position: relative;
+    background-color: #f0f2f5;
+}
+
+.pre-nav, nav {
+    background: white;
+}
+
+.pre-nav {
+    height: 12vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.logo {
+    height: 10vh;
+    align-self: center;
+    -webkit-filter: drop-shadow(3px 3px 2px #d3d3d3);
+    filter: drop-shadow(3px 3px 5px #d3d3d3);
+
+}
+
+nav {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    box-shadow: 0 4px 2px -2px gray;
+    padding: 0;
+    margin: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+}
+
+button {
+    font: 32px 'Agbalumo', serif;
+    height: 9vh;
+    width: 15vw;
+    background-color: #096ad9;
+    border-radius: 60px;
+    border: none;
+    color: white;
+    right: 10px;
+    position: absolute;
+    bottom: 2vh;
+    transition: background-color 1s;
+    transition: color 0.5;
+}
+
+button:hover {
+    background-color: black;
+    color: #096ad9;
+}
+
+button:active {
+    transition: none;
+    background-color: #096ad9;
+    color: white;
+    box-shadow: inset 0px 0px 50px 10px rgba(0, 0, 0, 0.6);
+
+}
+
+.text-logo {
+    font: 32px 'Agbalumo', serif;
+    align-self: center;
+    text-align: center;
+    color: #096ad9;
+    text-shadow: 3px 3px 2px #d3d3d3;
+    letter-spacing: 0px;
+}
+
+form {
+    top: 25%;
+    position: relative;
+    background: white;
+    padding-top: 20px;
+    padding-bottom: 4vh;
+    height: 80px;
+    width: 396px;
+    margin: auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    text-align: center;
+    transition: height 0.5s;
+}
+
+#title {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    padding: 5px 0px 10px 0px;
+}
+
+#name {
+    border: 1px solid #dddfe2;
+    height: 40px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    border-radius: 6px;
+    margin: auto;
+    width: 284px;
+}
+
+#label {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    position: absolute;
+    user-select: none;
+    top: 69px;
+    left: 56px;
+    color: #ccd0d5;
+}
+
+input[type=text] {
+    padding: 2px 15px;
+}
+
+#error {
+    color: red;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    visibility: hidden;
+    height: 30px;
+    margin-top: 10px;
+}
+/**
+@media screen and (max-width: 1280px) {
+    .navigation-bar {
+        width: 50%;
+    }
+
+    .portfolio-item {
+        width: 45vw;
+    }
+
+    .img-flipcards, .img-dencrypt, .img-coffemachine {
+        width: 41vw;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .navigation-bar {
+        width: 70%;
+    }
+
+    .portfolio-item {
+        width: 50vw;
+    }
+
+    .img-flipcards, .img-dencrypt, .img-coffemachine {
+        width: 46vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .burger {
+        display: block;
+        cursor: pointer;
+    }
+
+    .navigation-bar {
+        position: fixed;
+        right: 0px;
+        height: 100vh;
+        background: linear-gradient(90deg, rgb(64, 64, 64), gray);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in;
+    }
+
+    .navigation-item {
+        opacity: 0;
+    }
+
+    #home {
+        background-attachment: initial;
+    }
+
+    .portfolio-item {
+        width: 80vw;
+    }
+
+    .img-flipcards, .img-dencrypt, .img-coffemachine {
+        width: 76vw;
+    }
+
+    #home {
+        padding: 5px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    #about {
+        flex-direction: column-reverse;
+        flex-wrap: nowrap;
+    }
+
+    .about-text {
+        width: 75vw;
+    }
+
+    h2 {
+        width: 80vw;
+    }
+
+    .about-illustration {
+        width: 50vw;
+        height: 50vw;
+    }
+
+    .about-color, .about-image {
+        width: 47vw;
+        height: 47vw;
+    }
+
+    .window-content {
+        width: 90%;
+        height: 90%;
+    }
+
+    .window-body {
+        flex-direction: column-reverse;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        padding: 0% 5% 0% 5%;
+    }
+
+    .vid-popup {
+        width: 90%;
+        margin: 0;
+    }
+
+    .title {
+        font-size: 4vh;
+        padding: 3%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .portfolio-item {
+        width: 90vw;
+    }
+
+    .img-flipcards, .img-dencrypt, .img-coffemachine {
+        width: 86vw;
+    }
+}
+*/
