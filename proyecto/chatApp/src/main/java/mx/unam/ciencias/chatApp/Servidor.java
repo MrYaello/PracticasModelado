@@ -1,15 +1,22 @@
 package mx.unam.ciencias.chatApp;
+
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Servidor {
 
-    public static void main(String[] args) {
-        final int puerto = 12345;
+    private static final int puerto = 12345;
+    private static Map<String, PrintWriter> clientesConectados = new HashMap<>();
+    private static Gson gson = new Gson();
 
+    public static void main(String[] args) {
         try {
             ServerSocket servidorSocket = new ServerSocket(puerto);
             System.out.println("Servidor iniciado en el puerto " + puerto);
@@ -34,15 +41,22 @@ public class Servidor {
             String nombreUsuario = entrada.nextLine();
             System.out.println("Usuario conectado: " + nombreUsuario);
 
+            // Agregar el cliente a la lista de clientes conectados
+            clientesConectados.put(nombreUsuario, salida);
+
             while (true) {
                 String mensajeCliente = entrada.nextLine();
 
                 // Verificar si el mensaje es privado
                 if (mensajeCliente.startsWith("/privado")) {
-                    enviarMensajePrivado(nombreUsuario, mensajeCliente);
+                    // Convertir el mensaje JSON a un objeto Java
+                    MensajePrivado mensajePrivado = gson.fromJson(mensajeCliente.substring(9), MensajePrivado.class);
+
+                    // Enviar el mensaje privado al destinatario
+                    enviarMensajePrivado(nombreUsuario, mensajePrivado.getDestinatario(), mensajePrivado.getMensaje());
                 } else {
-                    // Si no es privado, simplemente imprimir el mensaje
-                    System.out.println(nombreUsuario + ": " + mensajeCliente);
+                    // Si no es privado, enviar el mensaje a todos los clientes
+                    enviarMensajeATodos(nombreUsuario, mensajeCliente);
                 }
             }
         } catch (IOException e) {
@@ -50,9 +64,36 @@ public class Servidor {
         }
     }
 
-    private static void enviarMensajePrivado(String remitente, String mensaje) {
-        // Lógica para enviar mensajes privados (puedes adaptar según tus necesidades)
-        // En este ejemplo, simplemente imprimimos el mensaje privado
-        System.out.println("Mensaje privado de " + remitente + ": " + mensaje);
+    private static void enviarMensajePrivado(String remitente, String destinatario, String mensaje) {
+        // Obtener el flujo de salida del destinatario
+        PrintWriter destino = clientesConectados.get(destinatario);
+
+        // Verificar si el destinatario existe
+        if (destino != null) {
+            // Enviar el mensaje privado al destinatario
+            destino.println("Mensaje privado de " + remitente + ": " + mensaje);
+        } else {
+            System.out.println("El usuario " + destinatario + " no está conectado.");
+        }
+    }
+
+    private static void enviarMensajeATodos(String remitente, String mensaje) {
+        // Enviar el mensaje a todos los clientes conectados
+        for (PrintWriter clienteSalida : clientesConectados.values()) {
+            clienteSalida.println(remitente + ": " + mensaje);
+        }
+    }
+
+    private static class MensajePrivado {
+        private String destinatario;
+        private String mensaje;
+
+        public String getDestinatario() {
+            return destinatario;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
     }
 }
