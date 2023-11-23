@@ -22,15 +22,21 @@ public class ClientProxy {
     final String loginPath = "src/main/web/index.html";
     final String appPath = "src/main/web/app.html";
     static Client client;
+    public static HttpServer server;
+    String htmlLoginResponse = fileToString(new File(loginPath));
+    String htmlAppResponse = fileToString(new File(appPath));
+
+    public ClientProxy() throws IOException {
+    }
+
 
     public static void main(String[] args) throws IOException, InterruptedException, NullPointerException {
-        int port = 8080;
+        int port = 8080 + Servidor.getClientNumber();
         ClientProxy cp = new ClientProxy();
         client = new Client();
-        cp.openBrowser("http://localhost:" + port);
-        HttpServer server = cp.launchServer(port);
+        //cp.openBrowser("http://localhost:" + port);
+        cp.launchServer(port);
         //cp.stopServer(server);
-        System.out.println(client.getUsername());
     }
 
     public String fileToString(File file) throws IOException {
@@ -46,9 +52,8 @@ public class ClientProxy {
         return sb.toString();
     }
 
-    public HttpServer launchServer(int port) throws IOException, InterruptedException {
-        HttpServer server = HttpServer.create();
-        String htmlLoginResponse = fileToString(new File(loginPath));
+    public void launchServer(int port) throws IOException, InterruptedException {
+        server = HttpServer.create();
         server.bind(new InetSocketAddress(port), 0);
 
         server.start();
@@ -56,41 +61,73 @@ public class ClientProxy {
 
         server.createContext("/",
                 exchange -> {
-                    exchange.getResponseHeaders().set("Content-Type","text/html");
-                    exchange.sendResponseHeaders(200, htmlLoginResponse.getBytes().length);
-                    OutputStream os = exchange.getResponseBody();
-                    os.write(htmlLoginResponse.getBytes(StandardCharsets.UTF_8));
-                    os.flush();
-                    os.close();
+                    handleResponse(exchange, htmlLoginResponse);
 
                     String query = exchange.getRequestURI().getQuery();
                     if (query != null && query.contains("name"))
                         client.setUsername(query.substring(5));
-                    System.out.println("[HTTP SERVER:8080] Query: " + query);
                 }
         );
         while (client.getUsername().equals("")) {
             Thread.sleep(10);
         }
-
-        String htmlAppResponse = fileToString(new File(appPath)).replace("{username}", client.getUsername());
+        htmlAppResponse = htmlAppResponse.replace("{username}", client.getUsername());
         server.removeContext("/");
         server.createContext("/",
                 exchange -> {
-                    exchange.getResponseHeaders().set("Content-Type","text/html");
-                    exchange.sendResponseHeaders(200, htmlAppResponse.getBytes().length);
-                    OutputStream os = exchange.getResponseBody();
-                    os.write(htmlAppResponse.getBytes(StandardCharsets.UTF_8));
-                    os.flush();
-                    os.close();
-
-                    String query = exchange.getRequestURI().getQuery();
-                    if (query != null && query.contains("name"))
-                        client.setUsername(query.substring(5));
-                    System.out.println("[HTTP SERVER:8080] Query: " + query);
+                    handleResponse(exchange, htmlAppResponse);
                 }
         );
-        return server;
+        Scanner sc = new Scanner(System.in);
+        sc.nextLine();
+        while (true) {
+            Thread.sleep(100);
+            refresh();
+        }
+    }
+
+    private void handleResponse(HttpExchange exchange, String response) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type","text/html");
+        exchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes(StandardCharsets.UTF_8));
+        os.flush();
+        os.close();
+        System.out.println(exchange.getRequestMethod() + ":" + exchange.getRequestURI().toString());
+    }
+
+    public void refresh() throws IOException {
+        String response = htmlAppResponse;
+        String users = "";
+        for (Client client : Servidor.getClients()) {
+            users += addUser(client.getUsername(), client.getState());
+        }
+        users += addUser("Yael", ClientState.ACTIVE);
+        users += addUser("Jacqui", ClientState.AWAY);
+        users += addUser("Pedro", ClientState.BUSY);
+        response = htmlAppResponse.substring(0, htmlAppResponse.indexOf("{user-start}")) + users + htmlAppResponse.substring(htmlAppResponse.indexOf("{user-end}"));
+        String finalResponse = response;
+
+        server.removeContext("/");
+        server.createContext("/",
+                exchange -> {
+                    handleResponse(exchange, finalResponse);
+                }
+        );
+    }
+
+    public String addUser(String username, ClientState state) {
+        return "<div class=\"user\">\n" +
+                "                <div class=\"img\">\n" +
+                "                    <svg>\n" +
+                "                        <circle class=\"state "+ state.toString().toLowerCase() +"\"></circle>\n" +
+                "                        <circle class=\"pic\"></circle>\n" +
+                "                    </svg>\n" +
+                "                </div>\n" +
+                "                <div class=\"user-name\">\n" +
+                "                    " + username + "\n" +
+                "                </div>\n" +
+                "            </div>";
     }
 /**
     public HttpServer launchAppServer(int port) throws IOException, InterruptedException {
@@ -125,7 +162,7 @@ public class ClientProxy {
         return server;
     }
 */
-    public void stopServer(HttpServer server) {
+    public void stopServer() {
         server.stop(1);
         System.out.println("[HTTP SERVER] Stoping Server.");
     }

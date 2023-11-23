@@ -17,7 +17,7 @@ public class ServerClient {
 
     public static void main(String[] args) {
         final String servidorIP = "127.0.0.1"; // Cambia a la dirección IP de tu servidor
-        final int puerto = 12345;
+        final int puerto = 5050;
 
         try {
             Socket clienteSocket = new Socket(servidorIP, puerto);

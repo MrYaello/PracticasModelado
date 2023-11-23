@@ -147,6 +147,25 @@
             margin-top: 10px;
             transition: visibility 0.2s;
         }
+
+        #welcome {
+            z-index: 200;
+            width: 100%;
+            height: 55%;
+            position: absolute;
+            background: white;
+            margin: auto;
+            padding-top: 30vh;
+            text-align: center;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 50px;
+            transition: visibility 0.5s;
+            visibility: hidden;
+        }
+
+        strong {
+            color: #096ad9;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="icon" type="image/vnd.microsoft.icon" href="https://raw.githubusercontent.com/MrYaello/assets/main/icon.ico">
@@ -162,6 +181,7 @@
 <nav>
     <div class="text-logo">ChatApp</div>
 </nav>
+<div id="welcome">Bienvenido/a <br><strong id="welcome-u">{username}</strong></div>
 <form class="form" name="user" onsubmit="return validateForm()">
     <div id="title">Iniciar sesión en ChatApp</div>
     <label for="name" id="label">Usuario</label>
@@ -169,7 +189,6 @@
     <div id="error">Error</div> 
 </form>
 <button id="button" type="submit" onclick="return validateForm()">Entrar</button>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
     let input = document.getElementById("name");
     let label = document.getElementById("label");
@@ -222,8 +241,19 @@
         }
     }
 
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
     if (document.location.href.includes("?name")) {
-        window.location.href = ".";
+        document.getElementById("welcome-u").textContent = document.location.href.substring(document.location.href.indexOf("?name")+6);
+        document.getElementsByClassName("pre-nav")[0].scrollIntoView();
+        document.getElementById("welcome").style.visibility = "visible";
+        document.body.style.overflow = "hidden";
+
+        delay(1750).then(() => {
+            window.location.href = ".";
+        });
     }
 </script>
 </body>

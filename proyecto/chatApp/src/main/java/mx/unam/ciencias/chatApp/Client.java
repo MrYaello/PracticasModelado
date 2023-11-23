@@ -4,6 +4,13 @@ public class Client {
     private String username = "";
     private ClientState state = ClientState.ACTIVE;
 
+    public Client() {}
+
+    public Client(String username, ClientState state) {
+        this.username = username;
+        this.state = state;
+    }
+
     public String getUsername() {
         return username;
     }

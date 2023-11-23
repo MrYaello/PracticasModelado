@@ -10,14 +10,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Servidor {
 
-    private static final int puerto = 12345;
+    private static final int puerto = 5050;
     private static Map<String, PrintWriter> clientesConectados = new HashMap<>();
+    private static ArrayList<Client> clients = new ArrayList<>();
     private static Gson gson = new Gson();
 
     public static void main(String[] args) {
@@ -36,6 +38,10 @@ public class Servidor {
         }
     }
 
+    public static ArrayList<Client> getClients() {
+        return clients;
+    }
+
     private static void manejarCliente(Socket clienteSocket) {
         try {
             Scanner entrada = new Scanner(clienteSocket.getInputStream());
@@ -47,6 +53,7 @@ public class Servidor {
 
             // Agregar el cliente a la lista de clientes conectados
             clientesConectados.put(nombreUsuario, salida);
+            clients.add(new Client(nombreUsuario, ClientState.ACTIVE));
 
             while (true) {
                 String mensajeCliente = entrada.nextLine();
@@ -86,6 +93,11 @@ public class Servidor {
         for (PrintWriter clienteSalida : clientesConectados.values()) {
             clienteSalida.println(remitente + ": " + mensaje);
         }
+    }
+
+    public static int getClientNumber() {
+        System.out.println(clientesConectados.size());
+        return clientesConectados.size();
     }
 
     private static class MensajePrivado {
