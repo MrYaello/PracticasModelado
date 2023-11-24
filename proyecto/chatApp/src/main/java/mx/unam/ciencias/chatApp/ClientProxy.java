@@ -1,11 +1,8 @@
 package mx.unam.ciencias.chatApp;
 
-<<<<<<< HEAD
-=======
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
->>>>>>> aaf878b43af4f27934e159cb7f233621c9766809
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.*;
 
