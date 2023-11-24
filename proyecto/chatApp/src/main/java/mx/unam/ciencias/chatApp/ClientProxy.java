@@ -2,6 +2,7 @@ package mx.unam.ciencias.chatApp;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.*;
 import java.io.File;
@@ -97,6 +98,7 @@ public class ClientProxy {
     }
 
     public void refresh() throws IOException {
+        
         String response = htmlAppResponse;
         String users = "";
         for (Client client : Servidor.getClients()) {
@@ -104,7 +106,7 @@ public class ClientProxy {
         }
         users += addUser("Yael", ClientState.ACTIVE);
         users += addUser("Jacqui", ClientState.AWAY);
-        users += addUser("Pedro", ClientState.BUSY);
+        users += addUser("Leslie", ClientState.BUSY);
         response = htmlAppResponse.substring(0, htmlAppResponse.indexOf("{user-start}")) + users + htmlAppResponse.substring(htmlAppResponse.indexOf("{user-end}"));
         String finalResponse = response;
 
@@ -116,6 +118,7 @@ public class ClientProxy {
         );
     }
 
+    
     public String addUser(String username, ClientState state) {
         return "<div class=\"user\">\n" +
                 "                <div class=\"img\">\n" +
@@ -182,4 +185,69 @@ public class ClientProxy {
     public static void printErrorMessage(JsonObject error) {
         System.out.println(error.get("error").getAsJsonObject().get("message").getAsString());
     }
+
+    public void procesarMensaje(JsonObject requestJson) {
+        if (requestJson.has("Type")) {
+            String tipoMensaje = requestJson.get("Type").getAsString().toUpperCase();
+
+            switch (tipoMensaje) {
+                case "DATA": {
+                    if (requestJson.has("Data")) {
+                        JsonObject data = requestJson.getAsJsonObject("Data");
+
+                        if (data.has("Username")) {
+                            procesarUsername(data.getAsJsonPrimitive("Username").getAsString());
+                        } else if (data.has("State")) {
+                            procesarEstado(data.getAsJsonPrimitive("State").getAsString());
+                        } else if (data.has("UserList")) {
+                            procesarListaUsuarios(data.getAsJsonArray("UserList"));
+                        }
+                        // Puedes agregar más casos según los campos dentro de "Data"
+                    } else {
+                        System.out.println("Campo 'Data' no encontrado en el mensaje de tipo Data.");
+                    }
+                    break;
+                }
+                case "MESSAGE": {
+                    if (requestJson.has("Remitente") && requestJson.has("Destinatario") && requestJson.has("Contenido")) {
+                        String remitente = requestJson.getAsJsonPrimitive("Remitente").getAsString();
+                        String destinatario = requestJson.getAsJsonPrimitive("Destinatario").getAsString();
+                        String contenido = requestJson.getAsJsonPrimitive("Contenido").getAsString();
+
+                        procesarMensajeGeneral(remitente, destinatario, contenido);
+                    } else {
+                        System.out.println("Campos necesarios no encontrados en el mensaje de tipo Message.");
+                    }
+                    break;
+                }
+                // Puedes agregar más casos según tus necesidades
+                default:
+                    System.out.println("Tipo de mensaje desconocido: " + tipoMensaje);
+                    break;
+            }
+        } else {
+            System.out.println("Campo 'Type' no encontrado en el mensaje JSON.");
+        }
+    }
+
+    private void procesarUsername(String username) {
+        System.out.println("Procesando mensaje de tipo Username. Username: " + username);
+        // Lógica para procesar la información asociada con el tipo Username
+    }
+
+    private void procesarEstado(String estado) {
+        System.out.println("Procesando mensaje de tipo Estado. Estado: " + estado);
+        // Lógica para procesar la información asociada con el tipo Estado
+    }
+
+    private void procesarListaUsuarios(JsonArray listaUsuarios) {
+        System.out.println("Procesando mensaje de tipo ListaUsuarios. Lista de usuarios: " + listaUsuarios);
+        // Lógica para procesar la información asociada con el tipo ListaUsuarios
+    }
+
+    private void procesarMensajeGeneral(String remitente, String destinatario, String contenido) {
+        System.out.println("Procesando mensaje general. Remitente: " + remitente + ", Destinatario: " + destinatario + ", Contenido: " + contenido);
+        // Lógica para procesar mensajes generales
+    }
+  
 }
