@@ -40,8 +40,18 @@ public class Client {
         return state;
     }
 
-    public void setState(ClientState state) {
-        this.state = state;
+    public void setState(String state) {
+        switch (state) {
+            case "ACTIVE":
+                this.state = ClientState.ACTIVE;
+                break;
+            case "AWAY":
+                this.state = ClientState.AWAY;
+                break;
+            case "BUSY":
+                this.state = ClientState.BUSY;
+                break;
+        }
     }
 
     @Override

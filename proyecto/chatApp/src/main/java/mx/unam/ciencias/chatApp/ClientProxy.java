@@ -106,8 +106,6 @@ public class ClientProxy {
         os.write(response.getBytes(StandardCharsets.UTF_8));
         os.flush();
         os.close();
-
-        System.out.println(exchange.getRequestMethod() + ":" + exchange.getRequestURI().toString());
         handleRequests(exchange.getRequestMethod(), exchange.getRequestURI().toString());
     }
 

@@ -50,21 +50,8 @@ public class Servidor {
             // Obtener el nombre de usuario del cliente
             procesarSolicitud(entrada.nextLine(), clienteSocket, salida);
             sendUserList();
-            while (entrada.hasNextLine()) {
+            while (entrada.hasNextLine())
                 procesarSolicitud(entrada.nextLine(), clienteSocket, salida);
-
-                // Verificar si el mensaje es privado
-                /*if (mensajeCliente.startsWith("/privado")) {
-                    // Convertir el mensaje JSON a un objeto Java
-                    MensajePrivado mensajePrivado = gson.fromJson(mensajeCliente.substring(9), MensajePrivado.class);
-
-                    // Enviar el mensaje privado al destinatario
-                    enviarMensajePrivado(client, mensajePrivado.getDestinatario(), mensajePrivado.getMensaje());
-                } else {
-                    // Si no es privado, enviar el mensaje a todos los clientes
-                    enviarMensajeATodos(client, mensajeCliente);
-                }*/
-            }
             if (!clienteSocket.getKeepAlive()) clientesConectados.remove(getClientByOS(salida));
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,7 +94,7 @@ public class Servidor {
                     if (requestJson.has("Username")) {
                         procesarUsername(requestJson.getAsJsonPrimitive("Username").getAsString(), clientOut);
                     } else if (requestJson.has("State")) {
-                        procesarEstado(requestJson.getAsJsonPrimitive("State").getAsString());
+                        procesarEstado(requestJson.getAsJsonPrimitive("State").getAsString(), clientOut);
                     }
                     break;
                 }
@@ -162,9 +149,10 @@ public class Servidor {
         clientesConectados.put(client, clientOut);
     }
 
-    private static void procesarEstado(String estado) {
+    private static void procesarEstado(String estado, PrintWriter clientOut) {
         System.out.println("Procesando mensaje de tipo Estado. Estado: " + estado);
-        // Lógica para procesar la información asociada con el tipo Estado
+        getClientByOS(clientOut).setState(estado);
+        sendUserList();
     }
 
     private static void sendUserList() {

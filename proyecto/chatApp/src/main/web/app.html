@@ -418,10 +418,13 @@
         menu.classList.toggle("hide");
     })
 
+    menu.addEventListener("click", () => {
+        menu.classList.toggle("hide");
+    })
+
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
     }
-
 
     let recipient = document.getElementById("chat-user-name");
     let message = document.getElementById("messagebox")
