@@ -94,7 +94,8 @@ public class Servidor {
             clienteSalida.println(remitente + ": " + mensaje);
         }
     }
-
+    
+    
     public static int getClientNumber() {
         System.out.println(clientesConectados.size());
         return clientesConectados.size();
@@ -112,4 +113,5 @@ public class Servidor {
             return mensaje;
         }
     }
+    
 }
