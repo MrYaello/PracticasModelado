@@ -202,7 +202,6 @@ public class ClientProxy {
                         } else if (data.has("UserList")) {
                             procesarListaUsuarios(data.getAsJsonArray("UserList"));
                         }
-                        // Puedes agregar más casos según los campos dentro de "Data"
                     } else {
                         System.out.println("Campo 'Data' no encontrado en el mensaje de tipo Data.");
                     }
@@ -220,7 +219,6 @@ public class ClientProxy {
                     }
                     break;
                 }
-                // Puedes agregar más casos según tus necesidades
                 default:
                     System.out.println("Tipo de mensaje desconocido: " + tipoMensaje);
                     break;

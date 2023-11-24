@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class Servidor {
 
     private static final int puerto = 5050;
-    private static Map<String, PrintWriter> clientesConectados = new HashMap<>();
+    private static Map<Client, PrintWriter> clientesConectados = new HashMap<>();
     private static ArrayList<Client> clients = new ArrayList<>();
     private static Gson gson = new Gson();
 
@@ -52,8 +52,9 @@ public class Servidor {
             System.out.println("Usuario conectado: " + nombreUsuario);
 
             // Agregar el cliente a la lista de clientes conectados
-            clientesConectados.put(nombreUsuario, salida);
-            clients.add(new Client(nombreUsuario, ClientState.ACTIVE));
+            Client client = new Client(nombreUsuario, ClientState.ACTIVE);
+            clientesConectados.put(client, salida);
+            clients.add(client);
 
             while (true) {
                 String mensajeCliente = entrada.nextLine();
@@ -64,10 +65,10 @@ public class Servidor {
                     MensajePrivado mensajePrivado = gson.fromJson(mensajeCliente.substring(9), MensajePrivado.class);
 
                     // Enviar el mensaje privado al destinatario
-                    enviarMensajePrivado(nombreUsuario, mensajePrivado.getDestinatario(), mensajePrivado.getMensaje());
+                    enviarMensajePrivado(client, mensajePrivado.getDestinatario(), mensajePrivado.getMensaje());
                 } else {
                     // Si no es privado, enviar el mensaje a todos los clientes
-                    enviarMensajeATodos(nombreUsuario, mensajeCliente);
+                    enviarMensajeATodos(client, mensajeCliente);
                 }
             }
         } catch (IOException e) {
@@ -75,27 +76,26 @@ public class Servidor {
         }
     }
 
-    private static void enviarMensajePrivado(String remitente, String destinatario, String mensaje) {
+    private static void enviarMensajePrivado(Client remitente, String destinatario, String mensaje) {
         // Obtener el flujo de salida del destinatario
-        PrintWriter destino = clientesConectados.get(destinatario);
+        PrintWriter destino = clientesConectados.get(new Client(destinatario, ClientState.ACTIVE));
 
         // Verificar si el destinatario existe
         if (destino != null) {
             // Enviar el mensaje privado al destinatario
-            destino.println("Mensaje privado de " + remitente + ": " + mensaje);
+            destino.println("Mensaje privado de " + remitente.getUsername() + ": " + mensaje);
         } else {
             System.out.println("El usuario " + destinatario + " no está conectado.");
         }
     }
 
-    private static void enviarMensajeATodos(String remitente, String mensaje) {
+    private static void enviarMensajeATodos(Client remitente, String mensaje) {
         // Enviar el mensaje a todos los clientes conectados
         for (PrintWriter clienteSalida : clientesConectados.values()) {
-            clienteSalida.println(remitente + ": " + mensaje);
+            clienteSalida.println(remitente.getUsername() + ": " + mensaje);
         }
     }
-    
-    
+
     public static int getClientNumber() {
         System.out.println(clientesConectados.size());
         return clientesConectados.size();
@@ -113,5 +113,4 @@ public class Servidor {
             return mensaje;
         }
     }
-    
 }
