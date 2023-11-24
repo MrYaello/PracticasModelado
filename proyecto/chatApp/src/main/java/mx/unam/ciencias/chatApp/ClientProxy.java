@@ -1,11 +1,7 @@
 package mx.unam.ciencias.chatApp;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.sun.net.httpserver.*;
-
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -15,33 +11,45 @@ import java.util.Scanner;
 import java.lang.StringBuilder;
 
 public class ClientProxy {
-    ArrayList<JsonObject> messages = new ArrayList<>();
+    ArrayList<String> messages = new ArrayList<>();
     final String loginPath = "src/main/web/index.html";
     final String appPath = "src/main/web/app.html";
     public static HttpServer server;
     String htmlLoginResponse = fileToString(new File(loginPath));
     String htmlAppResponse = fileToString(new File(appPath));
     Client client = new Client();
-    static BufferedInputStream in;
+    ArrayList<Client> onlineClients = new ArrayList<>();
+    static Scanner in;
     static PrintWriter out;
+    static int online;
+    String selected = "General";
 
     public ClientProxy() throws IOException {}
 
     public static void main(String[] args) throws IOException, InterruptedException, NullPointerException {
-        int webPort = 8080 + Servidor.getClientNumber();
+        ClientProxy cp = new ClientProxy();
         String serverIP = "127.0.0.1";
         int serverPort = 5050;
         try {
             Socket clientSocket = new Socket(serverIP, serverPort);
-            in = new BufferedInputStream(clientSocket.getInputStream());
+            in = new Scanner(clientSocket.getInputStream());
             out = new PrintWriter(clientSocket.getOutputStream(), true);
+            cp.procesarMensaje(in.nextLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ClientProxy cp = new ClientProxy();
+        int webPort = 8080 + online - 1;
+        new Thread(() -> cp.handleServerMessages(in)).start();
         cp.launchServer(webPort);
+
         //cp.openBrowser("http://localhost:" + port);
-        //cp.stopServer(server);
+
+    }
+
+    private void handleServerMessages(Scanner in) {
+        while (in.hasNextLine()) {
+            procesarMensaje(in.nextLine());
+        }
     }
 
     public String fileToString(File file) throws IOException {
@@ -64,7 +72,6 @@ public class ClientProxy {
         server.start();
         System.out.println("[HTTP SERVER] Running on port " + port);
 
-        String username = "";
         server.createContext("/",
                 exchange -> {
                     handleResponse(exchange, htmlLoginResponse);
@@ -72,7 +79,7 @@ public class ClientProxy {
                     String query = exchange.getRequestURI().getQuery();
                     if (query != null && query.contains("name")) {
                         client.setUsername(query.substring(5));
-                        out.println(client.getUsername());
+                        out.println(new Gson().toJson(sendUsername(client.getUsername())));
                     }
                 }
         );
@@ -86,8 +93,6 @@ public class ClientProxy {
                     handleResponse(exchange, htmlAppResponse);
                 }
         );
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
         while (true) {
             Thread.sleep(100);
             refresh();
@@ -101,20 +106,51 @@ public class ClientProxy {
         os.write(response.getBytes(StandardCharsets.UTF_8));
         os.flush();
         os.close();
+
         System.out.println(exchange.getRequestMethod() + ":" + exchange.getRequestURI().toString());
+        handleRequests(exchange.getRequestMethod(), exchange.getRequestURI().toString());
     }
 
+    private void handleRequests(String method, String uri) {
+        switch (method) {
+            case "GET":
+                if (uri.contains("receive")) {
+                    selected = uri.substring(10);
+                }
+                break;
+            case "POST":
+                if (uri.contains("state")) {
+                    uri.substring(8);
+                } else if (uri.contains("logout")) {
+                    stopServer();
+                } else if (uri.contains("send")) {
+                    out.println(new Gson().toJson(sendMessage(client.getUsername(), uri.substring(7).split(":")[0], uri.substring(7).split(":")[1])));
+                }
+                break;
+        }
+    }
+
+
     public void refresh() throws IOException {
-        
         String response = htmlAppResponse;
         String users = "";
-        for (Client client : Servidor.getClients()) {
+        for (Client client : onlineClients) {
+            if (client.equals(this.client)) continue;
             users += addUser(client.getUsername(), client.getState());
         }
-        users += addUser("Yael", ClientState.ACTIVE);
-        users += addUser("Jacqui", ClientState.AWAY);
-        users += addUser("Leslie", ClientState.BUSY);
-        response = htmlAppResponse.substring(0, htmlAppResponse.indexOf("{user-start}")) + users + htmlAppResponse.substring(htmlAppResponse.indexOf("{user-end}"));
+        String msgs = "";
+        for (String message : messages) {
+            if (message.split("_")[1].equals(selected)) {
+                msgs += addMessage(message.split("_")[0], message.split("_")[2], message.split("_")[0].equals(client.getUsername()));
+            }
+            if (message.split("_")[0].equals(selected) && !message.split("_")[1].equals("General")) {
+                msgs += addMessage(message.split("_")[0], message.split("_")[2], message.split("_")[0].equals(client.getUsername()));
+            }
+        }
+        response = (htmlAppResponse.substring(0, htmlAppResponse.indexOf("{user-start}")) + users
+                + htmlAppResponse.substring(htmlAppResponse.indexOf("{user-end}")));
+        response = (response.substring(0, response.indexOf("{messages-start}")) + msgs
+                + response.substring(response.indexOf("messages-end}"))).replace("{username}", client.getUsername());
         String finalResponse = response;
 
         server.removeContext("/");
@@ -124,9 +160,8 @@ public class ClientProxy {
                 }
         );
     }
-
     
-    public String addUser(String username, ClientState state) {
+    private String addUser(String username, ClientState state) {
         return "<div class=\"user\">\n" +
                 "                <div class=\"img\">\n" +
                 "                    <svg>\n" +
@@ -139,42 +174,24 @@ public class ClientProxy {
                 "                </div>\n" +
                 "            </div>";
     }
-/**
-    public HttpServer launchAppServer(int port) throws IOException, InterruptedException {
-        HttpServer server = HttpServer.create();
-        StringBuilder sb = new StringBuilder();
-        FileInputStream is = new FileInputStream("src/main/web/app.html");
-        Scanner sc = new Scanner(is);
-        while (sc.hasNextLine()) {
-            sb.append(sc.nextLine());
-            sb.append("\n");
-        }
-        is.close();
-        String htmlResponse = sb.toString();
-        server.bind(new InetSocketAddress(port), 0);
 
-        server.start();
-
-        server.createContext("/",
-                exchange -> {
-                    exchange.getResponseHeaders().set("Content-Type", "text/html");
-                    exchange.sendResponseHeaders(200, htmlResponse.getBytes().length);
-                    OutputStream os = exchange.getResponseBody();
-                    os.write(htmlResponse.getBytes(StandardCharsets.UTF_8));
-                    os.flush();
-                    os.close();
-
-                    String query = exchange.getRequestURI().getQuery();
-                    System.out.println("[HTTP SERVER:8080] Query: " + query);
-                }
-        );
-        System.out.println("[HTTP SERVER] Running on port " + port);
-        return server;
+    private String addMessage(String remitente, String contenido, boolean sent) {
+        return "<div class=\"message " + (sent ? "messageR" : "messageL") +"\">\n" +
+                "                <div class=\"author " + (sent ? "left" : "rigth") + "\">\n" +
+                "                    " + (sent ? "{username}" : remitente) + "\n" +
+                "                </div>\n" +
+                "                <div class=\"content " + (sent ? "left" : "rigth") + "\">\n" +
+                "                    " + contenido + "\n" +
+                "                </div>\n" +
+                "            </div>";
     }
-*/
+
     public void stopServer() {
         server.stop(1);
         System.out.println("[HTTP SERVER] Stoping Server.");
+        out.println(new Gson().toJson(sendLogout()));
+        System.out.println("a");
+        System.exit(1);
     }
 
     public void openBrowser(String url) throws IOException{
@@ -193,36 +210,49 @@ public class ClientProxy {
         System.out.println(error.get("error").getAsJsonObject().get("message").getAsString());
     }
 
-    public void procesarMensaje(JsonObject requestJson) {
+    private static JsonObject sendUsername(String username) {
+        JsonObject response = new JsonObject();
+        response.addProperty("Type", "Data");
+        response.addProperty("Username", username);
+        return response;
+    }
+
+    private static JsonObject sendLogout() {
+        JsonObject response = new JsonObject();
+        response.addProperty("Type", "Logout");
+        return response;
+    }
+
+    private static JsonObject sendMessage(String sender, String recipient, String content) {
+        JsonObject response = new JsonObject();
+        response.addProperty("Type", "Message");
+        response.addProperty("Sender", sender);
+        response.addProperty("Recipient", recipient);
+        response.addProperty("Content", content);
+        return response;
+    }
+
+    public void procesarMensaje(String request) {
+        JsonObject requestJson = JsonParser.parseString(request).getAsJsonObject();
         if (requestJson.has("Type")) {
             String tipoMensaje = requestJson.get("Type").getAsString().toUpperCase();
 
             switch (tipoMensaje) {
                 case "DATA": {
-                    if (requestJson.has("Data")) {
-                        JsonObject data = requestJson.getAsJsonObject("Data");
-
-                        if (data.has("Username")) {
-                            procesarUsername(data.getAsJsonPrimitive("Username").getAsString());
-                        } else if (data.has("State")) {
-                            procesarEstado(data.getAsJsonPrimitive("State").getAsString());
-                        } else if (data.has("UserList")) {
-                            procesarListaUsuarios(data.getAsJsonArray("UserList"));
-                        }
-                    } else {
-                        System.out.println("Campo 'Data' no encontrado en el mensaje de tipo Data.");
+                    if (requestJson.has("UserList")) {
+                        procesarListaUsuarios(requestJson.getAsJsonArray("UserList"));
+                    } else if (requestJson.has("UserNumber")) {
+                        procesarNumeroUsuarios(requestJson.getAsJsonPrimitive("UserNumber").getAsInt());
                     }
                     break;
                 }
                 case "MESSAGE": {
-                    if (requestJson.has("Remitente") && requestJson.has("Destinatario") && requestJson.has("Contenido")) {
-                        String remitente = requestJson.getAsJsonPrimitive("Remitente").getAsString();
-                        String destinatario = requestJson.getAsJsonPrimitive("Destinatario").getAsString();
-                        String contenido = requestJson.getAsJsonPrimitive("Contenido").getAsString();
+                    if (requestJson.has("Sender") && requestJson.has("Recipient") && requestJson.has("Content")) {
+                        String remitente = requestJson.getAsJsonPrimitive("Sender").getAsString();
+                        String destinatario = requestJson.getAsJsonPrimitive("Recipient").getAsString();
+                        String contenido = requestJson.getAsJsonPrimitive("Content").getAsString();
 
-                        procesarMensajeGeneral(remitente, destinatario, contenido);
-                    } else {
-                        System.out.println("Campos necesarios no encontrados en el mensaje de tipo Message.");
+                        procesarMensaje(remitente, destinatario, contenido);
                     }
                     break;
                 }
@@ -235,24 +265,23 @@ public class ClientProxy {
         }
     }
 
-    private void procesarUsername(String username) {
-        System.out.println("Procesando mensaje de tipo Username. Username: " + username);
-        // Lógica para procesar la información asociada con el tipo Username
-    }
-
-    private void procesarEstado(String estado) {
-        System.out.println("Procesando mensaje de tipo Estado. Estado: " + estado);
-        // Lógica para procesar la información asociada con el tipo Estado
-    }
-
     private void procesarListaUsuarios(JsonArray listaUsuarios) {
-        System.out.println("Procesando mensaje de tipo ListaUsuarios. Lista de usuarios: " + listaUsuarios);
-        // Lógica para procesar la información asociada con el tipo ListaUsuarios
+        ArrayList<Client> temp = new ArrayList<>();
+        System.out.println("Recibiendo ListaUsuarios: " + listaUsuarios);
+        for (JsonElement element: listaUsuarios) {
+            JsonObject jo = element.getAsJsonObject();
+            temp.add(new Client(jo.getAsJsonPrimitive("Username").getAsString(), jo.getAsJsonPrimitive("State").getAsString()));
+        }
+        onlineClients = temp;
     }
 
-    private void procesarMensajeGeneral(String remitente, String destinatario, String contenido) {
-        System.out.println("Procesando mensaje general. Remitente: " + remitente + ", Destinatario: " + destinatario + ", Contenido: " + contenido);
-        // Lógica para procesar mensajes generales
+    private void procesarMensaje(String remitente, String destinatario, String contenido) {
+        System.out.println("Procesando mensaje. Remitente: " + remitente + ", Destinatario: " + destinatario + ", Contenido: " + contenido);
+        messages.add(remitente + "_" + destinatario + "_" + contenido);
     }
-  
+
+    private void procesarNumeroUsuarios(int userNumber) {
+        System.out.println("Recibiendo userNumber: " + userNumber);
+        online = userNumber;
+    }
 }

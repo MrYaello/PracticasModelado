@@ -13,6 +13,21 @@ public class Client {
         this.state = state;
     }
 
+    public Client(String username, String state) {
+        this.username = username;
+        switch (state) {
+            case "ACTIVE":
+                this.state = ClientState.ACTIVE;
+                break;
+            case "AWAY":
+                this.state = ClientState.AWAY;
+                break;
+            case "BUSY":
+                this.state = ClientState.BUSY;
+                break;
+        }
+    }
+
     public String getUsername() {
         return username;
     }

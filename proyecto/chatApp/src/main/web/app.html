@@ -185,6 +185,7 @@
             align-self: center;
             font-family: Helvetica, Arial, sans-serif;
             font-size: 20px;
+            user-select: none;
         }
         
         #send {
@@ -307,6 +308,10 @@
         .sitem:hover {
             background: whitesmoke;
         }
+
+        .unread {
+            color: #096ad9;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="icon" type="image/vnd.microsoft.icon" href="https://raw.githubusercontent.com/MrYaello/assets/main/icon.ico">
@@ -372,26 +377,11 @@
             </div>
         </div>
         <div id="messages">
-            {message}
-            <div class="message messageL">
-                <div class="author rigth">
-                    {client}
-                </div>
-                <div class="content rigth">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint inventore quos nemo voluptatem libero quas quis, deleniti praesentium in sequi quasi eligendi! Ad, accusantium reprehenderit fugiat culpa repellat fugit quia?
-                </div>
-            </div>
-            <div class="message messageR">
-                <div class="author left">
-                    {sender}
-                </div>
-                <div class="content left">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint inventore quos nemo voluptatem libero quas quis, deleniti praesentium in sequi quasi eligendi! Ad, accusantium reprehenderit fugiat culpa repellat fugit quia?
-                </div>
-            </div>
-        </div >
+            {messages-start}
+            {messages-end}
+        </div>
         <form id="send" method="post">
-            <textarea id="messagebox" type="text" name="message" autocomplete="off"></textarea>
+            <input id="messagebox" type="text" name="message" autocomplete="off"></input>
             <button id="submit" type="submit">Enviar</button>
         </form>
     </div>
@@ -402,6 +392,15 @@
         document.querySelectorAll(".user").forEach(user => user.addEventListener("click", () => {
             recipient.textContent = user.children[1].textContent;
             document.getElementById("header-pic").classList = user.children[0].children[0].children[0].classList;
+
+            $.ajax({
+                type: "GET",
+                url: `?receive/${recipient.textContent.trim()}`,
+                data: "",
+                success: function (data) {
+                    message.value = "";
+                }
+            });
         }));
     }
 
@@ -428,20 +427,59 @@
     let message = document.getElementById("messagebox")
 
     $("#submit").click(function () {
-        $.ajax({
-           type: "POST",
-           url: `?send/${recipient.textContent.trim()}:${message.value.trim()}`,
-           data: "message",
-           success: function (data) {
-               message.value = "";
-               console.log(data);
-           }
-        });
+        if (!message.value.trim() == "")
+            $.ajax({
+               type: "POST",
+               url: `?send/${recipient.textContent.trim()}:${message.value.trim()}`,
+               data: "message",
+               success: function (data) {
+                   message.value = "";
+               }
+            });
         return false;
     });
 
-    document.addEventListener("mousemove", function () {
+    document.addEventListener("click", function () {
         users();
+    })
+
+    document.getElementById("active").addEventListener("click", () => {
+        $.ajax({
+            type: "POST",
+            url: `?state/ACTIVE`,
+            data: "message",
+            success: function () {}
+        });
+    })
+
+    document.getElementById("away").addEventListener("click", () => {
+        $.ajax({
+            type: "POST",
+            url: `?state/AWAY`,
+            data: "message",
+            success: function () {}
+        });
+    })
+
+    document.getElementById("busy").addEventListener("click", () => {
+        $.ajax({
+            type: "POST",
+            url: `?state/BUSY`,
+            data: "message",
+            success: function () {}
+        });
+    })
+
+    document.getElementById("logout").addEventListener("click", () => {
+        $.ajax({
+            type: "POST",
+            url: `?logout`,
+            data: "message",
+            success: function () {}
+        });
+        delay(1500).then(() => {
+            window.location.href = ".";
+        });
     })
 
     setInterval(function() {

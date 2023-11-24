@@ -235,6 +235,9 @@
         } else if (name.length > 8) {
             showError("El nombre de usuario no puede ser mayor a 8 caracteres.")
             return false;
+        } else if (name == "General") {
+            showError("No puedes utilizar este nombre de usuario.")
+            return false;
         } else {
             window.location.href = `?name=${name}`;
             return true;
