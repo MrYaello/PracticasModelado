@@ -120,7 +120,8 @@ public class ClientProxy {
                 break;
             case "POST":
                 if (uri.contains("state")) {
-                    uri.substring(8);
+                    System.out.println(uri.substring(8));
+                    out.println(new Gson().toJson(updateState(uri.substring(8))));
                 } else if (uri.contains("logout")) {
                     stopServer();
                 } else if (uri.contains("send")) {
@@ -129,7 +130,6 @@ public class ClientProxy {
                 break;
         }
     }
-
 
     public void refresh() throws IOException {
         String response = htmlAppResponse;
@@ -206,10 +206,6 @@ public class ClientProxy {
             System.out.println("Ingrese a la siguiente URL: " + url);
     }
 
-    public static void printErrorMessage(JsonObject error) {
-        System.out.println(error.get("error").getAsJsonObject().get("message").getAsString());
-    }
-
     private static JsonObject sendUsername(String username) {
         JsonObject response = new JsonObject();
         response.addProperty("Type", "Data");
@@ -229,6 +225,13 @@ public class ClientProxy {
         response.addProperty("Sender", sender);
         response.addProperty("Recipient", recipient);
         response.addProperty("Content", content);
+        return response;
+    }
+
+    private static JsonObject updateState(String state) {
+        JsonObject response = new JsonObject();
+        response.addProperty("Type", "Data");
+        response.addProperty("State", state);
         return response;
     }
 
