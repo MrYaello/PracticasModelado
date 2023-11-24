@@ -1,41 +1,43 @@
 package mx.unam.ciencias.chatApp;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.http.*;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.List;
 import java.lang.StringBuilder;
 
 public class ClientProxy {
     ArrayList<JsonObject> messages = new ArrayList<>();
     final String loginPath = "src/main/web/index.html";
     final String appPath = "src/main/web/app.html";
-    static Client client;
     public static HttpServer server;
     String htmlLoginResponse = fileToString(new File(loginPath));
     String htmlAppResponse = fileToString(new File(appPath));
+    Client client = new Client();
+    static BufferedInputStream in;
+    static PrintWriter out;
 
-    public ClientProxy() throws IOException {
-    }
-
+    public ClientProxy() throws IOException {}
 
     public static void main(String[] args) throws IOException, InterruptedException, NullPointerException {
-        int port = 8080 + Servidor.getClientNumber();
+        int webPort = 8080 + Servidor.getClientNumber();
+        String serverIP = "127.0.0.1";
+        int serverPort = 5050;
+        try {
+            Socket clientSocket = new Socket(serverIP, serverPort);
+            in = new BufferedInputStream(clientSocket.getInputStream());
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ClientProxy cp = new ClientProxy();
-        client = new Client();
+        cp.launchServer(webPort);
         //cp.openBrowser("http://localhost:" + port);
-        cp.launchServer(port);
         //cp.stopServer(server);
     }
 
@@ -59,13 +61,16 @@ public class ClientProxy {
         server.start();
         System.out.println("[HTTP SERVER] Running on port " + port);
 
+        String username = "";
         server.createContext("/",
                 exchange -> {
                     handleResponse(exchange, htmlLoginResponse);
 
                     String query = exchange.getRequestURI().getQuery();
-                    if (query != null && query.contains("name"))
+                    if (query != null && query.contains("name")) {
                         client.setUsername(query.substring(5));
+                        out.println(client.getUsername());
+                    }
                 }
         );
         while (client.getUsername().equals("")) {
