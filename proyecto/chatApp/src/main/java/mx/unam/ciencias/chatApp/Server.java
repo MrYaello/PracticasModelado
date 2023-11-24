@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Servidor {
+public class Server {
 
     private static final int puerto = 5050;
     private static Map<Client, PrintWriter> clientesConectados = new HashMap<>();

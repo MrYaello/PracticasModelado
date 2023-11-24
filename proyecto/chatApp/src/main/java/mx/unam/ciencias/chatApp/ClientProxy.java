@@ -41,9 +41,7 @@ public class ClientProxy {
         int webPort = 8080 + online - 1;
         new Thread(() -> cp.handleServerMessages(in)).start();
         cp.launchServer(webPort);
-
-        //cp.openBrowser("http://localhost:" + port);
-
+        cp.openBrowser("http://localhost:" + webPort);
     }
 
     private void handleServerMessages(Scanner in) {
